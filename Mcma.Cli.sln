@@ -4,7 +4,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Cli", "Mcma.Cli\Mcma.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management", "Mcma.Management\Mcma.Management.csproj", "{C1F06BEA-1894-47ED-9854-31BD152B37C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.Gradle", "Mcma.Management.Gradle\Mcma.Management.Gradle.csproj", "{E2A9119A-1EC8-428A-945F-4FE7658C4B17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Modules.Client", "Mcma.Modules.Client\Mcma.Modules.Client.csproj", "{A5CBB161-41BF-45DE-B497-7037FB1BB19D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.Aws", "Mcma.Management.Aws\Mcma.Management.Aws.csproj", "{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.Azure", "Mcma.Management.Azure\Mcma.Management.Azure.csproj", "{73167EB5-D567-4695-982C-88AFB2BB50C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.GoogleCloud", "Mcma.Management.GoogleCloud\Mcma.Management.GoogleCloud.csproj", "{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +26,23 @@ Global
 		{C1F06BEA-1894-47ED-9854-31BD152B37C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1F06BEA-1894-47ED-9854-31BD152B37C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1F06BEA-1894-47ED-9854-31BD152B37C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2A9119A-1EC8-428A-945F-4FE7658C4B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2A9119A-1EC8-428A-945F-4FE7658C4B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2A9119A-1EC8-428A-945F-4FE7658C4B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2A9119A-1EC8-428A-945F-4FE7658C4B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5CBB161-41BF-45DE-B497-7037FB1BB19D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5CBB161-41BF-45DE-B497-7037FB1BB19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5CBB161-41BF-45DE-B497-7037FB1BB19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5CBB161-41BF-45DE-B497-7037FB1BB19D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73167EB5-D567-4695-982C-88AFB2BB50C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73167EB5-D567-4695-982C-88AFB2BB50C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73167EB5-D567-4695-982C-88AFB2BB50C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73167EB5-D567-4695-982C-88AFB2BB50C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

@@ -3,6 +3,13 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>mcma</AssemblyName>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishTrimmed>true</PublishTrimmed>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,7 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mcma.Management.Gradle\Mcma.Management.Gradle.csproj" />
+      <ProjectReference Include="..\Mcma.Management.Aws\Mcma.Management.Aws.csproj" />
+      <ProjectReference Include="..\Mcma.Management.Azure\Mcma.Management.Azure.csproj" />
       <ProjectReference Include="..\Mcma.Management\Mcma.Management.csproj" />
     </ItemGroup>
 

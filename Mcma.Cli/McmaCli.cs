@@ -1,10 +1,13 @@
-﻿using McMaster.Extensions.CommandLineUtils;
+﻿using System;
+using McMaster.Extensions.CommandLineUtils;
 
 namespace Mcma.Cli
 {
     [Command("mcma")]
-    [Subcommand(typeof(Project.Project))]
-    public class McmaCli
+    [Subcommand(typeof(New.New),
+                typeof(Project.Project),
+                typeof(Module.Module))]
+    public class McmaCli : BaseCmd
     {
     }
 }
