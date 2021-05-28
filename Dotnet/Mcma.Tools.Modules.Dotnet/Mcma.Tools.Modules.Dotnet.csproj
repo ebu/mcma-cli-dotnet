@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Mcma.Tools.Dotnet\Mcma.Tools.Dotnet.csproj" />
+      <ProjectReference Include="..\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
+    </ItemGroup>
+
+</Project>
