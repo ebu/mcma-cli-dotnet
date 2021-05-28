@@ -1,6 +1,4 @@
-﻿using Mcma.Tools.Modules.Templates.Worker;
-
-namespace Mcma.Tools.Modules.Templates.JobWorker
+﻿namespace Mcma.Tools.Modules.Templates
 {
     public interface INewProviderJobWorkerModuleTemplate : INewProviderWorkerModuleTemplate
     {

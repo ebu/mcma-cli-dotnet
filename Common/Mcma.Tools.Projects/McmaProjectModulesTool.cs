@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Projects
+namespace Mcma.Tools.Projects
 {
-    internal class McmaProjectModulesManagementTool : IMcmaProjectModulesManagementTool
+    internal class McmaProjectModulesTool : IMcmaProjectModulesTool
     {
         public Task AddModuleAsync(string @namespace, string name, string provider, Version version)
         {

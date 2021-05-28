@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Mcma.Management.Utils;
 
-namespace Mcma.Management.Modules.Templates
+namespace Mcma.Tools.Modules.Templates
 {
     public class NewModuleParameters
     {

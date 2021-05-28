@@ -10,20 +10,20 @@
         <PublishTrimmed>true</PublishTrimmed>
         <PublishReadyToRun>true</PublishReadyToRun>
         <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-        <RootNamespace>Mcma.Cli</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
-        <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0"/>
+        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0"/>
+        <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="3.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mcma.Management.Aws\Mcma.Management.Aws.csproj" />
-      <ProjectReference Include="..\Mcma.Management.Azure\Mcma.Management.Azure.csproj" />
-      <ProjectReference Include="..\Mcma.Management.Docker\Mcma.Management.Docker.csproj" />
-      <ProjectReference Include="..\Mcma.Tools.Projects\Mcma.Tools.Projects.csproj" />
+        <ProjectReference Include="..\..\Common\Mcma.Tools.Projects\Mcma.Tools.Projects.csproj"/>
+        <ProjectReference Include="..\..\Docker\Mcma.Tools.Modules.Docker\Mcma.Tools.Modules.Docker.csproj"/>
+        <ProjectReference Include="..\..\Dotnet\Mcma.Tools.Modules.Dotnet.Aws\Mcma.Tools.Modules.Dotnet.Aws.csproj"/>
+        <ProjectReference Include="..\..\Dotnet\Mcma.Tools.Modules.Dotnet.Azure\Mcma.Tools.Modules.Dotnet.Azure.csproj"/>
+        <ProjectReference Include="..\..\Dotnet\Mcma.Tools.Modules.Dotnet.GoogleCloud\Mcma.Tools.Modules.Dotnet.GoogleCloud.csproj"/>
     </ItemGroup>
 
 </Project>

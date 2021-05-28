@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Projects
+namespace Mcma.Tools.Projects
 {
-    public interface IMcmaProjectManagementTool
+    public interface IMcmaProjectsTool
     {
-        IMcmaProjectModulesManagementTool Modules { get; }
+        IMcmaProjectModulesTool Modules { get; }
         
         Task NewAsync(string name);
 

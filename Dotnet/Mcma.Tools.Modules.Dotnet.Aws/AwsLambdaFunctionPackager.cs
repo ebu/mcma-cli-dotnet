@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
-using Mcma.Management.Modules.Packaging;
-using Mcma.Management.Utils;
+using Mcma.Tools.Dotnet;
+using Mcma.Tools.Modules.Packaging;
 
 namespace Mcma.Tools.Modules.Dotnet.Aws
 {

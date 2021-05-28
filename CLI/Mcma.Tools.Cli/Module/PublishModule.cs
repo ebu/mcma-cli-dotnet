@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
+using Mcma.Tools.Modules;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli.Module
+namespace Mcma.Tools.Cli.Module
 {
     [Command("publish")]
     public class PublishModule : BaseCmd
     {
-        public PublishModule(IMcmaModuleManagementTool moduleManagementTool)
+        public PublishModule(IMcmaModulesTool modulesTool)
         {
-            ModuleManagementTool = moduleManagementTool ?? throw new ArgumentNullException(nameof(moduleManagementTool));
+            ModulesTool = modulesTool ?? throw new ArgumentNullException(nameof(modulesTool));
         }
         
-        private IMcmaModuleManagementTool ModuleManagementTool { get; }
+        private IMcmaModulesTool ModulesTool { get; }
         
         [Option("-p|--provider", CommandOptionType.MultipleValue)]
         public string[] Providers { get; set; }
@@ -27,15 +27,15 @@ namespace Mcma.Cli.Module
         protected override async Task ExecuteAsync(CommandLineApplication app)
         {
             var repository = Repository ?? "default";
-            var version = Version != null ? Management.Version.Parse(Version) : VersionHelper.FromFile()?.Next() ?? Management.Version.Initial();
+            var version = Version != null ? Tools.Version.Parse(Version) : VersionHelper.FromFile()?.Next() ?? Tools.Version.Initial();
 
             if (Providers != null)
             {
                 foreach (var provider in Providers)
-                    await ModuleManagementTool.PublishAsync(repository, version, provider);
+                    await ModulesTool.PublishAsync(repository, version, provider);
             }
             else
-                await ModuleManagementTool.PublishAsync(repository, version);
+                await ModulesTool.PublishAsync(repository, version);
         }
     }
 }

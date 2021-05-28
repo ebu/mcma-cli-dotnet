@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
-using Mcma.Management.Modules.Templates;
+using Mcma.Tools.Modules;
+using Mcma.Tools.Modules.Templates;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli.New
+namespace Mcma.Tools.Cli.New
 {
     [Command("module")]
     public class NewModule : BaseCmd
     {
-        public NewModule(IMcmaModuleManagementTool moduleManagementTool)
+        public NewModule(IMcmaModulesTool modulesTool)
         {
-            ModuleManagementTool = moduleManagementTool;
+            ModulesTool = modulesTool ?? throw new ArgumentNullException(nameof(modulesTool));
         }
         
-        private IMcmaModuleManagementTool ModuleManagementTool { get; }
+        private IMcmaModulesTool ModulesTool { get; }
 
         [Argument(0, Name = "template")]
         [AllowedValues("api", "worker", "jobworker", IgnoreCase = true)]
@@ -78,7 +78,7 @@ namespace Mcma.Cli.New
         }
 
         protected override Task ExecuteAsync(CommandLineApplication app)
-            => ModuleManagementTool.NewAsync(Template,
+            => ModulesTool.NewAsync(Template,
                                              new NewModuleParameters(OutputDir ?? Directory.GetCurrentDirectory(),
                                                                      Namespace,
                                                                      Name,

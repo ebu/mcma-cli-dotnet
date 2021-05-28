@@ -2,16 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mcma.Management.Utils
+namespace Mcma.Tools.Dotnet
 {
     internal class DotnetCli : IDotnetCli
     {
-        public DotnetCli(ICmdExecutor cmdExecutor)
+        public DotnetCli(ICliExecutor cliExecutor)
         {
-            CmdExecutor = cmdExecutor ?? throw new ArgumentNullException(nameof(cmdExecutor));
+            CliExecutor = cliExecutor ?? throw new ArgumentNullException(nameof(cliExecutor));
         }
         
-        private ICmdExecutor CmdExecutor { get; }
+        private ICliExecutor CliExecutor { get; }
 
         public Task<(string stdOut, string stdErr)> RunCmdWithOutputAsync(string cmd, params string[] args)
             => RunCmdAsync(cmd, args, true);
@@ -20,6 +20,6 @@ namespace Mcma.Management.Utils
             => RunCmdAsync(cmd, args, false);
 
         public Task<(string stdOut, string stdErr)> RunCmdAsync(string cmd, string[] args, bool showOutput)
-            => CmdExecutor.ExecuteAsync("dotnet", new[] { cmd }.Concat(args).ToArray(), showOutput);
+            => CliExecutor.ExecuteAsync("dotnet", new[] { cmd }.Concat(args).ToArray(), showOutput);
     }
 }

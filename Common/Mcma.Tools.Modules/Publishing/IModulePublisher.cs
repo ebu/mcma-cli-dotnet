@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Modules.Publishing
+namespace Mcma.Tools.Modules.Publishing
 {
     public interface IModulePublisher
     {

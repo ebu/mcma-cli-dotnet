@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Mcma.Management.Utils
+namespace Mcma.Tools.Dotnet
 {
     public static class DotnetProjectHelper
     {

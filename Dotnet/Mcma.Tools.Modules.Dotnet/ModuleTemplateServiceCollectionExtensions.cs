@@ -1,8 +1,7 @@
-﻿using Mcma.Tools.Modules.Templates.API;
-using Mcma.Tools.Modules.Templates.JobWorker;
-using Mcma.Tools.Modules.Templates.Worker;
+﻿using Mcma.Tools.Modules.Templates;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Mcma.Tools.Modules.Templates
+namespace Mcma.Tools.Modules.Dotnet
 {
     public static class ModuleTemplateServiceCollectionExtensions
     {

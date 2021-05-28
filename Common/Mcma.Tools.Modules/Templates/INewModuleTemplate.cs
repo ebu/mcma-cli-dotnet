@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Modules.Templates
+namespace Mcma.Tools.Modules.Templates
 {
     public interface INewModuleTemplate
     {

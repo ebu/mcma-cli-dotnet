@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Mcma.Management.Modules.Templates;
-using Mcma.Management.Modules.Templates.JobWorker;
-using Mcma.Management.Utils;
+using Mcma.Tools.Dotnet;
+using Mcma.Tools.Modules.Templates;
 
 namespace Mcma.Tools.Modules.Dotnet.Azure
 {

@@ -1,16 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Cli", "Mcma.Cli\Mcma.Cli.csproj", "{A5A59702-9B04-4D21-A991-A8F29F56473C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Cli", "CLI\Mcma.Tools.Cli\Mcma.Tools.Cli.csproj", "{A5A59702-9B04-4D21-A991-A8F29F56473C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management", "Mcma.Management\Mcma.Management.csproj", "{C1F06BEA-1894-47ED-9854-31BD152B37C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Projects", "Common\Mcma.Tools.Projects\Mcma.Tools.Projects.csproj", "{C1F06BEA-1894-47ED-9854-31BD152B37C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Modules.Client", "Mcma.Modules.Client\Mcma.Modules.Client.csproj", "{A5CBB161-41BF-45DE-B497-7037FB1BB19D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.ModuleRepositoryClient", "Common\Mcma.Tools.ModuleRepositoryClient\Mcma.Tools.ModuleRepositoryClient.csproj", "{A5CBB161-41BF-45DE-B497-7037FB1BB19D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.Aws", "Mcma.Management.Aws\Mcma.Management.Aws.csproj", "{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Modules.Dotnet.Aws", "Dotnet\Mcma.Tools.Modules.Dotnet.Aws\Mcma.Tools.Modules.Dotnet.Aws.csproj", "{19AADBBA-5E6E-45C4-A2D8-BAF007E58840}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.Azure", "Mcma.Management.Azure\Mcma.Management.Azure.csproj", "{73167EB5-D567-4695-982C-88AFB2BB50C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Modules.Dotnet.Azure", "Dotnet\Mcma.Tools.Modules.Dotnet.Azure\Mcma.Tools.Modules.Dotnet.Azure.csproj", "{73167EB5-D567-4695-982C-88AFB2BB50C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Management.GoogleCloud", "Mcma.Management.GoogleCloud\Mcma.Management.GoogleCloud.csproj", "{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Modules.Dotnet.GoogleCloud", "Dotnet\Mcma.Tools.Modules.Dotnet.GoogleCloud\Mcma.Tools.Modules.Dotnet.GoogleCloud.csproj", "{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Modules.Docker", "Docker\Mcma.Tools.Modules.Docker\Mcma.Tools.Modules.Docker.csproj", "{2D008DF4-4C98-43BF-A922-F32A74DD10D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Common", "Common\Mcma.Tools.Common\Mcma.Tools.Common.csproj", "{04A9505D-A1DC-4FE9-AA14-163263F14D79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Dotnet", "Dotnet\Mcma.Tools.Dotnet\Mcma.Tools.Dotnet.csproj", "{867AC438-4F8B-47A4-93E5-4163CD04A50F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Modules", "Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj", "{085F3542-AA6C-4229-9308-76882DA0518B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dotnet", "Dotnet", "{08CBE363-EB6C-4E79-970E-A2950CDCBDE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcma.Tools.Modules.Dotnet", "Dotnet\Mcma.Tools.Modules.Dotnet\Mcma.Tools.Modules.Dotnet.csproj", "{970FA10C-AD8E-487F-8813-3B2356D3ABDA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1E4AE4E3-0559-4C54-818D-E75E56D50830}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{90AF5F90-8F8B-4BEF-B9B2-20BD42D8F5DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{AFA06AA6-8E58-43EC-BFEB-B06A5CD6E449}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,7 +60,38 @@ Global
 		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D008DF4-4C98-43BF-A922-F32A74DD10D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D008DF4-4C98-43BF-A922-F32A74DD10D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D008DF4-4C98-43BF-A922-F32A74DD10D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D008DF4-4C98-43BF-A922-F32A74DD10D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A9505D-A1DC-4FE9-AA14-163263F14D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A9505D-A1DC-4FE9-AA14-163263F14D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A9505D-A1DC-4FE9-AA14-163263F14D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A9505D-A1DC-4FE9-AA14-163263F14D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{867AC438-4F8B-47A4-93E5-4163CD04A50F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{867AC438-4F8B-47A4-93E5-4163CD04A50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{867AC438-4F8B-47A4-93E5-4163CD04A50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{867AC438-4F8B-47A4-93E5-4163CD04A50F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{085F3542-AA6C-4229-9308-76882DA0518B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{085F3542-AA6C-4229-9308-76882DA0518B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{085F3542-AA6C-4229-9308-76882DA0518B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{085F3542-AA6C-4229-9308-76882DA0518B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{970FA10C-AD8E-487F-8813-3B2356D3ABDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970FA10C-AD8E-487F-8813-3B2356D3ABDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970FA10C-AD8E-487F-8813-3B2356D3ABDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970FA10C-AD8E-487F-8813-3B2356D3ABDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{867AC438-4F8B-47A4-93E5-4163CD04A50F} = {08CBE363-EB6C-4E79-970E-A2950CDCBDE6}
+		{970FA10C-AD8E-487F-8813-3B2356D3ABDA} = {08CBE363-EB6C-4E79-970E-A2950CDCBDE6}
+		{04A9505D-A1DC-4FE9-AA14-163263F14D79} = {1E4AE4E3-0559-4C54-818D-E75E56D50830}
+		{A5CBB161-41BF-45DE-B497-7037FB1BB19D} = {1E4AE4E3-0559-4C54-818D-E75E56D50830}
+		{085F3542-AA6C-4229-9308-76882DA0518B} = {1E4AE4E3-0559-4C54-818D-E75E56D50830}
+		{C1F06BEA-1894-47ED-9854-31BD152B37C6} = {1E4AE4E3-0559-4C54-818D-E75E56D50830}
+		{19AADBBA-5E6E-45C4-A2D8-BAF007E58840} = {08CBE363-EB6C-4E79-970E-A2950CDCBDE6}
+		{73167EB5-D567-4695-982C-88AFB2BB50C8} = {08CBE363-EB6C-4E79-970E-A2950CDCBDE6}
+		{08FC72EB-E9C8-4A80-AD6F-B17148C02EE6} = {08CBE363-EB6C-4E79-970E-A2950CDCBDE6}
+		{2D008DF4-4C98-43BF-A922-F32A74DD10D3} = {90AF5F90-8F8B-4BEF-B9B2-20BD42D8F5DB}
+		{A5A59702-9B04-4D21-A991-A8F29F56473C} = {AFA06AA6-8E58-43EC-BFEB-B06A5CD6E449}
 	EndGlobalSection
 EndGlobal

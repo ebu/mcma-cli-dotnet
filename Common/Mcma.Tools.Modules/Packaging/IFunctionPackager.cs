@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Modules.Packaging
+namespace Mcma.Tools.Modules.Packaging
 {
     public interface IFunctionPackager
     {

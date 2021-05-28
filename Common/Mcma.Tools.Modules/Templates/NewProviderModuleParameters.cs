@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Mcma.Management.Modules.Templates
+namespace Mcma.Tools.Modules.Templates
 {
     public class NewProviderModuleParameters
     {

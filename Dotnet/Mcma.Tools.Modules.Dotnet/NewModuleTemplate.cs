@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Mcma.Tools.Dotnet;
+using Mcma.Tools.Modules.Templates;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace Mcma.Tools.Modules.Templates
+namespace Mcma.Tools.Modules.Dotnet
 {
     public abstract class NewModuleTemplate<T> : INewModuleTemplate where T : INewProviderModuleTemplate
     {

@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mcma.Tools.Common\Mcma.Tools.Common.csproj" />
+      <ProjectReference Include="..\..\Common\Mcma.Tools.Common\Mcma.Tools.Common.csproj" />
     </ItemGroup>
 
 </Project>

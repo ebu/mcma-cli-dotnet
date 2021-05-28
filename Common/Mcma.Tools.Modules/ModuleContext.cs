@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Mcma.Management.Modules
+namespace Mcma.Tools.Modules
 {
     public class ModuleContext
     {

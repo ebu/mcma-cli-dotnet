@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mcma.Management.Utils
+namespace Mcma.Tools
 {
     public static class StringExtensions
     {

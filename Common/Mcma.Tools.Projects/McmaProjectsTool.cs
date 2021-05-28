@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Mcma.Management.Projects
+namespace Mcma.Tools.Projects
 {
     internal class McmaProjectsTool : IMcmaProjectsTool
     {

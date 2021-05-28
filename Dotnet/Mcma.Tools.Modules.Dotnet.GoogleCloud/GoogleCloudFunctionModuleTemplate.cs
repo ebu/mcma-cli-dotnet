@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
-using Mcma.Management.Modules.Templates;
-using Mcma.Management.Utils;
+using Mcma.Tools.Dotnet;
+using Mcma.Tools.Modules.Templates;
 
-namespace Mcma.Management.GoogleCloud
+namespace Mcma.Tools.Modules.Dotnet.GoogleCloud
 {
     public abstract class GoogleCloudFunctionModuleTemplate : INewProviderModuleTemplate
     {

@@ -1,11 +1,11 @@
-﻿using Mcma.Management.Modules.Packaging;
+﻿using Mcma.Tools.Modules.Packaging;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mcma.Management.Docker
 {
-    public static class McmaDockerManagementServiceCollectionExtensions
+    public static class DockerModulesServiceCollectionExtensions
     {
-        public static IServiceCollection AddMcmaDockerImagePackaging(this IServiceCollection services)
+        public static IServiceCollection AddDockerModules(this IServiceCollection services)
             => services.AddSingleton<IDockerCli, DockerCli>().AddSingleton<IFunctionPackager, DockerImagePackager>();
     }
 }

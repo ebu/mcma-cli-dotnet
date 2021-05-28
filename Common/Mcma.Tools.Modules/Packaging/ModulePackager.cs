@@ -4,12 +4,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Management.Utils;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using Newtonsoft.Json.Linq;
 
-namespace Mcma.Management.Modules.Packaging
+namespace Mcma.Tools.Modules.Packaging
 {
     public class ModulePackager : IModulePackager
     {

@@ -1,6 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli
+namespace Mcma.Tools.Cli
 {
     [Command("mcma")]
     [Subcommand(typeof(New.New),

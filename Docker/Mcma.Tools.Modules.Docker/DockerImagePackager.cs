@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
-using Mcma.Management.Modules.Packaging;
+using Mcma.Tools.Modules;
+using Mcma.Tools.Modules.Packaging;
 
 namespace Mcma.Management.Docker
 {

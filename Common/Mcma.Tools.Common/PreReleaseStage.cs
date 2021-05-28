@@ -1,4 +1,4 @@
-﻿namespace Mcma.Modules.Client
+﻿namespace Mcma.Tools
 {
     public enum PreReleaseStage
     {

@@ -1,6 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli.Project
+namespace Mcma.Tools.Cli.Project
 {
     [Command("project")]
     public class Project : BaseCmd

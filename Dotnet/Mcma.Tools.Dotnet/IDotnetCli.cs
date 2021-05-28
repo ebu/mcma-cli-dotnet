@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Utils
+namespace Mcma.Tools.Dotnet
 {
     public interface IDotnetCli
     {

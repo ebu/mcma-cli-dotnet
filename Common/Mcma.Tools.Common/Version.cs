@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Mcma.Management
+namespace Mcma.Tools
 {
     public class Version
     {
@@ -53,20 +53,20 @@ namespace Mcma.Management
             PreReleaseStage? preReleaseStage = null;
 
             string preReleaseNumberText = null;
-            if (preReleaseLabel.StartsWith(Management.PreReleaseStage.Alpha.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (preReleaseLabel.StartsWith(Tools.PreReleaseStage.Alpha.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                preReleaseStage = Management.PreReleaseStage.Alpha;
-                preReleaseNumberText = preReleaseLabel.Substring(Management.PreReleaseStage.Alpha.ToString().Length);
+                preReleaseStage = Tools.PreReleaseStage.Alpha;
+                preReleaseNumberText = preReleaseLabel.Substring(Tools.PreReleaseStage.Alpha.ToString().Length);
             }
-            else if (preReleaseLabel.StartsWith(Management.PreReleaseStage.Beta.ToString(), StringComparison.OrdinalIgnoreCase))
+            else if (preReleaseLabel.StartsWith(Tools.PreReleaseStage.Beta.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                preReleaseStage = Management.PreReleaseStage.Beta;
-                preReleaseNumberText = preReleaseLabel.Substring(Management.PreReleaseStage.Beta.ToString().Length);
+                preReleaseStage = Tools.PreReleaseStage.Beta;
+                preReleaseNumberText = preReleaseLabel.Substring(Tools.PreReleaseStage.Beta.ToString().Length);
             }
-            else if (preReleaseLabel.StartsWith(Management.PreReleaseStage.RC.ToString(), StringComparison.OrdinalIgnoreCase))
+            else if (preReleaseLabel.StartsWith(Tools.PreReleaseStage.RC.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                preReleaseStage = Management.PreReleaseStage.RC;
-                preReleaseNumberText = preReleaseLabel.Substring(Management.PreReleaseStage.RC.ToString().Length);
+                preReleaseStage = Tools.PreReleaseStage.RC;
+                preReleaseNumberText = preReleaseLabel.Substring(Tools.PreReleaseStage.RC.ToString().Length);
             }
 
             if (!preReleaseStage.HasValue)
@@ -80,7 +80,7 @@ namespace Mcma.Management
             return new Version(major, minor, patch, preReleaseStage, preReleaseNumber);
         }
 
-        public static Version Initial() => new(0, 0, 1, Management.PreReleaseStage.Alpha, 1);
+        public static Version Initial() => new(0, 0, 1, Tools.PreReleaseStage.Alpha, 1);
 
         public Version Next()
             => PreReleaseStage.HasValue

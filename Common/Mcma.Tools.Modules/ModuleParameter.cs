@@ -1,4 +1,4 @@
-﻿namespace Mcma.Management.Modules
+﻿namespace Mcma.Tools.Modules
 {
     public class ModuleParameter
     {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Mcma.Tools.Modules
 {
-    public static class McmaModuleManagementServiceCollectionExtensions
+    public static class ModulesToolServiceCollectionExtensions
     {
         public static IServiceCollection AddMcmaModulesTool(this IServiceCollection services)
             => services.AddSingleton<IModulePackager, ModulePackager>()

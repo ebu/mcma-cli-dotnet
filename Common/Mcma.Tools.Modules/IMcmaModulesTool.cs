@@ -3,7 +3,7 @@ using Mcma.Tools.Modules.Templates;
 
 namespace Mcma.Tools.Modules
 {
-    public interface IMcmaModuleManagementTool
+    public interface IMcmaModulesTool
     {
         Task NewAsync(string template, NewModuleParameters newModuleParameters);
 

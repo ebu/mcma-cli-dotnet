@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
-using Mcma.Management.Modules.Templates;
-using Mcma.Management.Utils;
+using Mcma.Tools.Modules.Templates;
+using Mcma.Tools.Dotnet;
 
 namespace Mcma.Tools.Modules.Dotnet.Aws
 {

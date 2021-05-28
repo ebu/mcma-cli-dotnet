@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Mcma.Management.Utils
+namespace Mcma.Tools
 {
     public static class CliUtilsServiceCollectionExtensions
     {
-        public static IServiceCollection AddCliUtils(this IServiceCollection services)
-            => services.AddSingleton<ICmdExecutor, CmdExecutor>().AddSingleton<IDotnetCli, DotnetCli>();
+        public static IServiceCollection AddCliExecutor(this IServiceCollection services)
+            => services.AddSingleton<ICliExecutor, CliExecutor>();
     }
 }

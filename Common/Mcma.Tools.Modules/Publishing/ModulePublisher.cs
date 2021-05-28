@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Mcma.Management.Modules.Packaging;
 using Mcma.Tools.ModuleRepositoryClient;
+using Mcma.Tools.Modules.Packaging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Mcma.Management.Modules.Publishing
+namespace Mcma.Tools.Modules.Publishing
 { 
     public class ModulePublisher : IModulePublisher
     {

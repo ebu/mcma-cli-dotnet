@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli
+namespace Mcma.Tools.Cli
 {
     [HelpOption]
     public abstract class BaseCmd

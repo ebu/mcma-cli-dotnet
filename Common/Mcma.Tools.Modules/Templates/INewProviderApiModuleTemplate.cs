@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Tools.Modules.Templates.API
+namespace Mcma.Tools.Modules.Templates
 {
     public interface INewProviderApiModuleTemplate : INewProviderModuleTemplate
     {

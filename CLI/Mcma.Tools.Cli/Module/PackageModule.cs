@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mcma.Management.Modules;
+using Mcma.Tools.Modules;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli.Module
+namespace Mcma.Tools.Cli.Module
 {
     [Command("pack")]
     public class PackageModule : BaseCmd
     {
-        public PackageModule(IMcmaModuleManagementTool moduleManagementTool)
+        public PackageModule(IMcmaModulesTool modulesTool)
         {
-            ModuleManagementTool = moduleManagementTool ?? throw new ArgumentNullException(nameof(moduleManagementTool));
+            ModulesTool = modulesTool ?? throw new ArgumentNullException(nameof(modulesTool));
         }
         
-        private IMcmaModuleManagementTool ModuleManagementTool { get; }
+        private IMcmaModulesTool ModulesTool { get; }
         
         [Option("-p|--provider", CommandOptionType.MultipleValue)]
         public string[] Providers { get; set; }
@@ -23,15 +23,15 @@ namespace Mcma.Cli.Module
 
         protected override async Task ExecuteAsync(CommandLineApplication app)
         {
-            var version = Version != null ? Management.Version.Parse(Version) : VersionHelper.FromFile()?.Next() ?? Management.Version.Initial();
+            var version = Version != null ? Tools.Version.Parse(Version) : VersionHelper.FromFile()?.Next() ?? Tools.Version.Initial();
 
             if (Providers != null)
             {
                 foreach (var provider in Providers)
-                    await ModuleManagementTool.PackageAsync(version, provider);
+                    await ModulesTool.PackageAsync(version, provider);
             }
             else
-                await ModuleManagementTool.PackageAsync(version);
+                await ModulesTool.PackageAsync(version);
         }
     }
 }

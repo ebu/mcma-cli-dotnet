@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Mcma.Tools
 {
-    internal class CmdExecutor : ICmdExecutor
+    internal class CliExecutor : ICliExecutor
     {
         public Task<(string stdOut, string stdErr)> ExecuteAsync(string cmd, string[] args, bool showOutput, params (string, string)[] environmentVariables)
         {
@@ -49,7 +49,7 @@ namespace Mcma.Tools
         }
     }
 
-    class CmdExecutorImpl : CmdExecutor
+    class CliExecutorImpl : CliExecutor
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Mcma.Management.Modules
+namespace Mcma.Tools.Modules
 {
     public class VersionHelper
     {

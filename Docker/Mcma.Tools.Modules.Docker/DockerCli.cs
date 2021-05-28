@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Management.Utils;
+using Mcma.Tools;
 
 namespace Mcma.Management.Docker
 {
     internal class DockerCli : IDockerCli
     {
-        public DockerCli(ICmdExecutor cmdExecutor)
+        public DockerCli(ICliExecutor cmdExecutor)
         {
-            CmdExecutor = cmdExecutor ?? throw new ArgumentNullException(nameof(cmdExecutor));
+            CliExecutor = cmdExecutor ?? throw new ArgumentNullException(nameof(cmdExecutor));
         }
         
-        private ICmdExecutor CmdExecutor { get; }
+        private ICliExecutor CliExecutor { get; }
         
         public Task RunCmdAsync(string cmd, params string[] args)
-            => CmdExecutor.ExecuteAsync("docker", new[] { cmd }.Concat(args).ToArray(), true);
+            => CliExecutor.ExecuteAsync("docker", new[] { cmd }.Concat(args).ToArray(), true);
     }
 }

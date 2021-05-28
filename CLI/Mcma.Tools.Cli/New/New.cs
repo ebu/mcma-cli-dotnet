@@ -1,6 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Cli.New
+namespace Mcma.Tools.Cli.New
 {
     [Command(Name = "new")]
     [Subcommand(typeof(NewModule))]

@@ -1,4 +1,4 @@
-﻿namespace Mcma.Modules.Client
+﻿namespace Mcma.Tools
 {
     public class Module
     {
@@ -18,7 +18,7 @@
         public string Version
         {
             get => _version.ToString();
-            set => _version = Management.Version.Parse(value);
+            set => _version = Tools.Version.Parse(value);
         }
         
         public string DisplayName { get; set; }

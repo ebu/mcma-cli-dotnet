@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mcma.Tools.Dotnet;
+using Mcma.Tools.Modules.Templates;
 
-namespace Mcma.Tools.Modules.Templates.JobWorker
+namespace Mcma.Tools.Modules.Dotnet
 {
     public class NewJobWorkerModuleTemplate : NewModuleTemplate<INewProviderJobWorkerModuleTemplate>
     {

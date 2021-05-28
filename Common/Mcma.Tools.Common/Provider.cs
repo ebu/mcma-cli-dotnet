@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mcma.Management.Modules
+namespace Mcma.Tools
 {
     public class Provider
     {
