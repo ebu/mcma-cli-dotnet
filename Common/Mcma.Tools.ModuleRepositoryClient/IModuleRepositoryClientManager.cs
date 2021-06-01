@@ -1,7 +1,9 @@
-﻿namespace Mcma.Tools.ModuleRepositoryClient
+﻿using System.Threading.Tasks;
+
+namespace Mcma.Tools.ModuleRepositoryClient
 {
     public interface IModuleRepositoryClientManager
     {
-        IModuleRepositoryClient GetClient(string name);
+        Task<IModuleRepositoryClient> GetClientAsync(string name);
     }
 }

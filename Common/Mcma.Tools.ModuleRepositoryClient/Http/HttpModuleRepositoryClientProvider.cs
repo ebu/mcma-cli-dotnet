@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using Mcma.Tools.ModuleRepositoryClient.Auth;
+using Mcma.Client;
 
 namespace Mcma.Tools.ModuleRepositoryClient.Http
 {
@@ -15,7 +15,10 @@ namespace Mcma.Tools.ModuleRepositoryClient.Http
 
         public bool IsSupportedUrl(string url) => url?.StartsWith("http", StringComparison.OrdinalIgnoreCase) ?? false;
 
-        public IModuleRepositoryClient GetClient(string url, IModuleRepositoryAuthenticator authenticator) =>
-            new HttpModuleRepositoryClient(HttpClientFactory.CreateClient(), url, authenticator);
+        public IModuleRepositoryClient GetClient(string url, IAuthenticator authenticator)
+        {
+            var httpClient = HttpClientFactory.CreateClient();
+            return new HttpModuleRepositoryClient(new McmaHttpClient(httpClient, authenticator), httpClient, url);
+        }
     }
 }

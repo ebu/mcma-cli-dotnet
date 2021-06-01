@@ -39,15 +39,18 @@ namespace Mcma.Tools.ModuleRepositoryClient.Registry
         private Dictionary<string, (string url, string authType, string authContext)> Load()
         {
             if (!File.Exists(RepositoriesJsonFile))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(RepositoriesJsonFile));
                 File.WriteAllText(RepositoriesJsonFile, DefaultJson.ToString(Formatting.Indented));
+            }
 
             var json = JObject.Parse(File.ReadAllText(RepositoriesJsonFile));
 
             return json.Properties().ToDictionary(x => x.Name,
                                                   x => (
-                                                           x["url"]?.Value<string>(),
-                                                           x["authType"]?.Value<string>(),
-                                                           x["authContext"]?.Value<string>()
+                                                           x.Value["url"]?.Value<string>(),
+                                                           x.Value["authType"]?.Value<string>(),
+                                                           x.Value["authContext"]?.Value<string>()
                                                        ),
                                                   StringComparer.OrdinalIgnoreCase);
         }

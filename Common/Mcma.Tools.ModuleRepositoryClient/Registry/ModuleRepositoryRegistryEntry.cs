@@ -9,6 +9,7 @@ namespace Mcma.Tools.ModuleRepositoryClient.Registry
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Url = url ?? throw new ArgumentNullException(nameof(url));
             AuthType = authType;
+            AuthContext = authContext;
         }
         
         public string Name { get; }

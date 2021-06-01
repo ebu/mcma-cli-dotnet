@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Mcma.Tools.ModuleRepositoryClient.Auth;
+using Mcma.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -11,30 +11,22 @@ namespace Mcma.Tools.ModuleRepositoryClient.Http
 {
     internal class HttpModuleRepositoryClient : IModuleRepositoryClient
     {
-        public HttpModuleRepositoryClient(HttpClient httpClient, string url, IModuleRepositoryAuthenticator authenticator)
+        public HttpModuleRepositoryClient(McmaHttpClient mcmaHttpClient, HttpClient httpClient, string url)
         {
+            McmaHttpClient = mcmaHttpClient ?? throw new ArgumentNullException(nameof(mcmaHttpClient));
             HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             Url = url ?? throw new ArgumentNullException(nameof(url));
-            Authenticator = authenticator;
         }
         
+        private McmaHttpClient McmaHttpClient { get; }
+
         private HttpClient HttpClient { get; }
 
         private string Url { get; }
 
-        private IModuleRepositoryAuthenticator Authenticator { get; }
-
         public async Task PublishAsync(JObject moduleJson, string modulePackageFilePath)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"{Url}modules/publish")
-            {
-                Content = new StringContent(moduleJson.ToString(), Encoding.UTF8, "application/json")
-            };
-    
-            if (Authenticator != null)
-                await Authenticator.AddAuthenticationAsync(request);
-    
-            var publishResp = await HttpClient.SendAsync(request);
+            var publishResp = await McmaHttpClient.PostAsync($"{Url.TrimEnd('/')}/modules/publish", new StringContent(moduleJson.ToString(), Encoding.UTF8, "application/json"));
             if (!publishResp.IsSuccessStatusCode)
             {
                 var errorMessage = $"Response status code does not indicate success: {(int)publishResp.StatusCode} ({publishResp.ReasonPhrase})";

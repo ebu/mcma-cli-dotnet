@@ -1,4 +1,4 @@
-﻿using Mcma.Tools.ModuleRepositoryClient.Auth;
+﻿using Mcma.Client;
 
 namespace Mcma.Tools.ModuleRepositoryClient
 {
@@ -6,6 +6,6 @@ namespace Mcma.Tools.ModuleRepositoryClient
     {
         bool IsSupportedUrl(string url);
 
-        IModuleRepositoryClient GetClient(string url, IModuleRepositoryAuthenticator authenticator);
+        IModuleRepositoryClient GetClient(string url, IAuthenticator authenticator);
     }
 }

@@ -11,7 +11,7 @@ namespace Mcma.Tools.Modules
         private readonly Lazy<ModulePackage> _modulePackage;
         private readonly Lazy<Module> _module;
 
-        public ModuleContext(string providerFolder, Version version)
+        public ModuleContext(string providerFolder, Version version, Provider provider = null)
         {
             RootFolder = Directory.GetCurrentDirectory();
             ProviderFolder = providerFolder ?? throw new ArgumentNullException(nameof(providerFolder));
@@ -25,8 +25,16 @@ namespace Mcma.Tools.Modules
                 [nameof(Version)] = Version.ToString()
             };
 
+            provider ??= new Provider(Path.GetFileName(providerFolder));
+
             _modulePackage = new Lazy<ModulePackage>(() => GetJson(Path.Combine(ProviderFolder, "module-package.json")).ToObject<ModulePackage>());
-            _module = new Lazy<Module>(() => GetJson(Path.Combine(RootFolder, "module.json")).ToObject<Module>());
+            _module = new Lazy<Module>(() =>
+            {
+                var module = GetJson(Path.Combine(RootFolder, "module.json")).ToObject<Module>();
+                module.Version = Version.ToString();
+                module.Provider = provider;
+                return module;
+            });
         }
 
         public string RootFolder { get; }
@@ -62,18 +70,18 @@ namespace Mcma.Tools.Modules
                 throw new Exception($"Failed to parse json from {path}", ex);
             }
         }
+        
+        public FunctionInfo GetFunction(string functionName)
+            => ModulePackage.Functions.FirstOrDefault(f => f.Name.Equals(functionName, StringComparison.OrdinalIgnoreCase));
 
-        public string GetFunctionPath(string functionName)
-        {
-            var function = ModulePackage.Functions.FirstOrDefault();
-            return function != null ? Path.Combine(ProviderFolder, function.Path) : null;
-        }
+        public string GetFunctionPath(string functionName) => GetFunctionPath(GetFunction(functionName));
+        
+        public string GetFunctionPath(FunctionInfo function) => function != null ? Path.Combine(ProviderFolder, function.Path) : null;
 
-        public string GetFunctionOutputZipPath(string functionName)
-        {
-            var function = ModulePackage.Functions.FirstOrDefault();
-            return function != null ? Path.Combine(FunctionsOutputFolder, function.Name + ".zip") : null;
-        }
+        public string GetFunctionOutputZipPath(string functionName) => GetFunctionOutputZipPath(GetFunction(functionName));
+
+        public string GetFunctionOutputZipPath(FunctionInfo function) =>
+            function != null ? Path.Combine(FunctionsOutputFolder, function.Name + ".zip") : null;
 
         public string ReplaceTokens(string content)
             => Variables.Aggregate(content, (current, variable) => current.Replace($"@@{variable.Key}@@", variable.Value));

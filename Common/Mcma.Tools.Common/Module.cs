@@ -1,4 +1,8 @@
-﻿namespace Mcma.Tools
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+
+namespace Mcma.Tools
 {
     public class Module
     {
@@ -28,5 +32,10 @@
         public string Owner { get; set; }
         
         public string[] Tags { get; set; }
+
+        public JObject ToJson() => JObject.FromObject(this, JsonSerializer.CreateDefault(new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        }));
     }
 }

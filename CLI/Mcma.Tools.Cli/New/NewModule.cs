@@ -35,7 +35,7 @@ namespace Mcma.Tools.Cli.New
         [Option("-dn|--displayName")]
         public string DisplayName { get; set; }
 
-        [Option("-d|--description")]
+        [Option("-desc|--description")]
         public string Description { get; set; }
         
         [Option("-p|--provider", CommandOptionType.MultipleValue)]

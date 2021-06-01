@@ -3,9 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Mcma.Tools.ModuleRepositoryClient;
 using Mcma.Tools.Modules.Packaging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Mcma.Tools.Modules.Publishing
 { 
@@ -25,14 +22,9 @@ namespace Mcma.Tools.Modules.Publishing
         {   
             await ModulePackager.PackageProviderModuleAsync(moduleContext);
 
-            var client = ClientManager.GetClient(repositoryName);
+            var client = await ClientManager.GetClientAsync(repositoryName);
 
-            await client.PublishAsync(JObject.FromObject(moduleContext.Module,
-                                                         JsonSerializer.CreateDefault(new JsonSerializerSettings
-                                                         {
-                                                             ContractResolver = new CamelCasePropertyNamesContractResolver()
-                                                         })),
-                                      moduleContext.OutputZipFile);
+            await client.PublishAsync(moduleContext.Module.ToJson(), moduleContext.OutputZipFile);
         }
 
         public Task PublishProviderModuleAsync(string repositoryName, string provider, Version version)

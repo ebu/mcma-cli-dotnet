@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj"/>
-        <ProjectReference Include="..\Mcma.Tools.Dotnet\Mcma.Tools.Dotnet.csproj"/>
+        <ProjectReference Include="..\..\Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
+        <ProjectReference Include="..\Mcma.Tools.Dotnet\Mcma.Tools.Dotnet.csproj" />
     </ItemGroup>
 
 </Project>

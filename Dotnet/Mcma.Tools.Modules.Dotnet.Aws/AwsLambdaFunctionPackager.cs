@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Mcma.Tools.Dotnet;
 using Mcma.Tools.Modules.Packaging;
+using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools.Modules.Dotnet.Aws
 {
@@ -20,20 +20,17 @@ namespace Mcma.Tools.Modules.Dotnet.Aws
         
         private async Task EnsureLambdaToolsAvailableAsync(ModuleContext moduleContext)
         {
-            var (stdOut, _) = await DotnetCli.RunCmdWithoutOutputAsync("tool", "list");
-    
-            var areAwsLambdaToolsInstalled =
-                stdOut.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
-                      .Any(x => x.StartsWith("amazon.lambda.tools", StringComparison.OrdinalIgnoreCase));
+            var toolManifestFile = Path.Combine(moduleContext.ProviderFolder, ".config", "dotnet-tools.json");
+            var toolManifest = JObject.Parse(File.ReadAllText(toolManifestFile));
 
+            var areAwsLambdaToolsInstalled = toolManifest["tools"]?["amazon.lambda.tools"] != null;
             if (!areAwsLambdaToolsInstalled)
             {
-                var toolManifest = Path.Combine(moduleContext.ProviderFolder, ".config", "dotnet-tools.json");
-                if (!File.Exists(toolManifest))
+                if (!File.Exists(toolManifestFile))
                     await DotnetCli.RunCmdWithOutputAsync("new", "tool-manifest", "-o", moduleContext.ProviderFolder);
                 
                 Console.WriteLine("Installing dotnet CLI Lambda tools...");
-                await DotnetCli.RunCmdWithOutputAsync("tool", "install", "amazon.lambda.tools", "--tool-manifest", toolManifest);
+                await DotnetCli.RunCmdWithOutputAsync("tool", "install", "amazon.lambda.tools", "--tool-manifest", toolManifestFile);
                 Console.WriteLine("dotnet CLI Lambda tools installed successfully");
             }
             else

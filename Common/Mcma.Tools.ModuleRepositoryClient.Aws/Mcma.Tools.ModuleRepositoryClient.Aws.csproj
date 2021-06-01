@@ -2,17 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mcma.Tools.Common\Mcma.Tools.Common.csproj" />
       <ProjectReference Include="..\Mcma.Tools.ModuleRepositoryClient\Mcma.Tools.ModuleRepositoryClient.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.1.15" />
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="AWSSDK.Core" Version="3.7.0.31" />
+      <PackageReference Include="Mcma.Aws.Client" Version="0.14.1" />
     </ItemGroup>
 
 </Project>

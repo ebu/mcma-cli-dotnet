@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools.Modules.Packaging
@@ -39,8 +40,7 @@ namespace Mcma.Tools.Modules.Packaging
                     throw new Exception("Invalid value in 'additionalFiles'. Value must be an object or a string.");
             }
 
-            var matcher = new Matcher();
-            matcher.AddInclude(src);
+            var matcher = new Matcher().AddInclude(src).AddExclude(".publish");
 
             var srcDir = new DirectoryInfo(moduleContext.ProviderFolder);
             var srcDirWrapper = new DirectoryInfoWrapper(srcDir);
@@ -53,8 +53,8 @@ namespace Mcma.Tools.Modules.Packaging
 
             foreach (var match in matches.Files)
             {
-                var srcPath = Path.Combine(moduleContext.ProviderFolder, match.Stem);
-                var destPath = Path.Combine(destRootDir, match.Stem);
+                var srcPath = Path.Combine(moduleContext.ProviderFolder, match.Path);
+                var destPath = Path.Combine(destRootDir, match.Path);
                 
                 var destDir = Path.GetDirectoryName(destPath);
                 Directory.CreateDirectory(destDir);
@@ -69,8 +69,8 @@ namespace Mcma.Tools.Modules.Packaging
                 }
                 else
                 {
-                    Console.WriteLine($"Copying {srcPath} to {destDir}");
-                    File.Copy(srcPath, destDir, true);
+                    Console.WriteLine($"Copying {srcPath} to {destPath}");
+                    File.Copy(srcPath, destPath, true);
                 }
             }
         }
@@ -101,6 +101,10 @@ namespace Mcma.Tools.Modules.Packaging
                 if (files != null)
                     foreach (var file in files)
                         CopyFile(moduleContext, file);
+
+                File.WriteAllText(
+                    Path.Combine(moduleContext.OutputStagingFolder, "module.json"),
+                    moduleContext.Module.ToJson().ToString(Formatting.Indented));
                 
                 if (File.Exists(moduleContext.OutputZipFile))
                     File.Delete(moduleContext.OutputZipFile);
