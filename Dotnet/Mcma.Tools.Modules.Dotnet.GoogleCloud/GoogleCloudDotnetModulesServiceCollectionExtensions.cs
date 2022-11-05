@@ -1,15 +1,12 @@
-﻿using Mcma.Tools.Modules.Packaging;
-using Mcma.Tools.Modules.Templates;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Mcma.Tools.Modules.Dotnet.GoogleCloud
+namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
+
+public static class GoogleCloudDotnetModulesServiceCollectionExtensions
 {
-    public static class GoogleCloudDotnetModulesServiceCollectionExtensions
-    {
-        public static IServiceCollection AddGoogleCloudDotnetModules(this IServiceCollection services)
-            => services.AddSingleton<IFunctionPackager, GoogleCloudFunctionPackager>()
-                       .AddSingleton<INewProviderApiModuleTemplate, GoogleCloudFunctionApiModuleTemplate>()
-                       .AddSingleton<INewProviderWorkerModuleTemplate, GoogleCloudFunctionWorkerModuleTemplate>()
-                       .AddSingleton<INewProviderJobWorkerModuleTemplate, GoogleCloudFunctionJobWorkerModuleTemplate>();
-    }
+    public static IServiceCollection AddGoogleCloudDotnetModules(this IServiceCollection services)
+        => services.AddSingleton<IDotnetFunctionPackager, GoogleCloudFunctionPackager>()
+                   .AddSingleton<IDotnetNewProviderModuleTemplate, GoogleCloudFunctionApiModuleTemplate>()
+                   .AddSingleton<IDotnetNewProviderModuleTemplate, GoogleCloudFunctionWorkerModuleTemplate>()
+                   .AddSingleton<IDotnetNewProviderModuleTemplate, GoogleCloudFunctionJobWorkerModuleTemplate>();
 }

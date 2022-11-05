@@ -1,19 +1,17 @@
 ﻿using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Templates;
 
 namespace Mcma.Tools.Modules.Dotnet.Azure
 {
-    public class AzureFunctionAppApiModuleTemplate : AzureFunctionAppModuleTemplate, INewProviderApiModuleTemplate
+    public class AzureFunctionAppApiModuleTemplate : AzureFunctionAppModuleTemplate
     {
-        public AzureFunctionAppApiModuleTemplate(IDotnetCli dotnetCli)
-            : base(dotnetCli)
+        public AzureFunctionAppApiModuleTemplate(IDotnetProjectCreator dotnetProjectCreator)
+            : base(dotnetProjectCreator)
         {
         }
 
-        public Task CreateApiProjectAsync(NewModuleParameters moduleParameters,
-                                          NewProviderModuleParameters providerParameters,
-                                          string srcFolder)
-            => CreateProjectAsync(moduleParameters, providerParameters, srcFolder, "mcmaazapi");
+        public override ModuleType ModuleType => ModuleType.API;
+
+        public override Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters)
+            => DotnetProjectCreator.CreateProjectAsync(parameters, srcFolder, "mcmaazapi");
     }
 }

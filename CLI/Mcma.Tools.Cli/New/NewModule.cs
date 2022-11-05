@@ -1,90 +1,85 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Mcma.Tools.Modules;
-using Mcma.Tools.Modules.Templates;
+using Mcma.Tools.Modules.Dotnet;
+using Mcma.Tools.Modules.Gradle;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Tools.Cli.New
+namespace Mcma.Tools.Cli.New;
+
+[Command("module")]
+public class NewModule : BaseCmd
 {
-    [Command("module")]
-    public class NewModule : BaseCmd
+    public NewModule(IMcmaModulesTool modulesTool)
     {
-        public NewModule(IMcmaModulesTool modulesTool)
-        {
-            ModulesTool = modulesTool ?? throw new ArgumentNullException(nameof(modulesTool));
-        }
+        ModulesTool = modulesTool ?? throw new ArgumentNullException(nameof(modulesTool));
+    }
         
-        private IMcmaModulesTool ModulesTool { get; }
+    private IMcmaModulesTool ModulesTool { get; }
 
-        [Argument(0, Name = "template")]
-        [AllowedValues("api", "worker", "jobworker", IgnoreCase = true)]
-        public string Template { get; set; }
-
-        [Option("-n|--name")]
-        [Required]
-        public string Name { get; set; }
-
-        [Option("-ns|--namespace")]
-        [Required]
-        public string Namespace { get; set; }
-
-        [Option("-dn|--displayName")]
-        public string DisplayName { get; set; }
-
-        [Option("-desc|--description")]
-        public string Description { get; set; }
+    [Argument(0, Name = "moduleType")]
+    [AllowedValues("api", "worker", "jobworker", IgnoreCase = true)]
+    public ModuleType ModuleType { get; set; }
         
-        [Option("-p|--provider", CommandOptionType.MultipleValue)]
-        [AllowedValues("aws", "azure", "google", "kubernetes", IgnoreCase = true)]
-        [Required]
-        public string[] Providers { get; set; }
+    [Option("-bs|--buildSystem <BUILDSYSTEM>")]
+    [AllowedValues(DotnetModuleBuildSystem.Name, GradleModuleBuildSystem.Name)]
+    [Required]
+    public string BuildSystem { get; set; }
+
+    [Option("-n|--name <NAME>")]
+    [Required]
+    public string Name { get; set; }
+
+    [Option("-ns|--namespace <NAMESPACE>")]
+    [Required]
+    public string Namespace { get; set; }
+
+    [Option("-dn|--displayName <DISPLAYNAME>")]
+    public string DisplayName { get; set; }
+
+    [Option("-desc|--description <DESCRIPTION>")]
+    public string Description { get; set; }
         
-        [Option("-pa|--providerArg", CommandOptionType.MultipleValue)]
-        public string[] ProviderArgs { get; set; }
+    [Option("-p|--provider <PROVIDER>", CommandOptionType.MultipleValue)]
+    [AllowedValues("aws", "azure", "google", "kubernetes", IgnoreCase = true)]
+    [Required]
+    public Provider[] Providers { get; set; }
         
-        [Option("-o|--output")]
-        public string OutputDir { get; set; }
+    [Option("-pa|--providerArg <ARG>", CommandOptionType.MultipleValue)]
+    public string[] ProviderArgs { get; set; }
         
-        [Option("-t|--jobType")]
-        public string JobType { get; set; }
+    [Option("-o|--outputDir <OUTPUTDIR>")]
+    public string OutputDir { get; set; }
+        
+    [Option("-t|--jobType <JOBTYPE>")]
+    public string JobType { get; set; }
 
-        private IEnumerable<NewProviderModuleParameters> ProvidersWithArgs
-        {
-            get
-            {
-                var providers = Providers ?? Array.Empty<string>();
-                var providerArgs = ProviderArgs ?? Array.Empty<string>();
+    protected override Task ExecuteAsync(CommandLineApplication app)
+    {
+        var providers = Providers ?? Array.Empty<Provider>();
+        var providerArgNameValues = ProviderArgs?.ToNameValuePairs();
 
-                if (providerArgs.Length == 0)
-                    return providers.Select(p => new NewProviderModuleParameters(p));
+        var providersWithArgs =
+            providers.Select(provider =>
+                                 new NewProviderModuleParameters(
+                                     provider,
+                                     providerArgNameValues?
+                                         .Where(arg => arg.Name.StartsWith($"{provider}.", StringComparison.OrdinalIgnoreCase))
+                                         .Select(arg => (arg.Name[$"{provider}.".Length..], arg.Value))
+                                         .ToArray()));
 
-                return providers.Select(provider =>
-                                            new NewProviderModuleParameters(
-                                                provider,
-                                                providerArgs.Where(arg => arg.StartsWith($"{provider}.", StringComparison.OrdinalIgnoreCase))
-                                                            .Select(argForProvider =>
-                                                            {
-                                                                var argKeyAndValue = argForProvider.Split(":");
-                                                                if (argKeyAndValue.Length != 2)
-                                                                    throw new Exception($"Invalid provider arg '{argForProvider}'");
-                                                                return (argKeyAndValue[0][(provider.Length + 1)..], argKeyAndValue[1]);
-                                                            })
-                                                            .ToArray()));
-            }
-        }
-
-        protected override Task ExecuteAsync(CommandLineApplication app)
-            => ModulesTool.NewAsync(Template,
-                                             new NewModuleParameters(OutputDir ?? Directory.GetCurrentDirectory(),
-                                                                     Namespace,
-                                                                     Name,
-                                                                     ProvidersWithArgs,
-                                                                     JobType,
-                                                                     DisplayName,
-                                                                     Description));
+        return ModulesTool.NewAsync(WorkingDir,
+                                    BuildSystem,
+                                    ModuleType,
+                                    new NewModuleParameters(OutputDir ?? Directory.GetCurrentDirectory(),
+                                                            Namespace,
+                                                            Name,
+                                                            providersWithArgs,
+                                                            JobType,
+                                                            DisplayName,
+                                                            Description));
     }
 }

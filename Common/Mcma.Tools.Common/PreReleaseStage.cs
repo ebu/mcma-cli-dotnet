@@ -1,9 +1,8 @@
-﻿namespace Mcma.Tools
+﻿namespace Mcma.Tools;
+
+public enum PreReleaseStage
 {
-    public enum PreReleaseStage
-    {
-        Alpha,
-        Beta,
-        RC
-    }
+    Alpha,
+    Beta,
+    RC
 }

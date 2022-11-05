@@ -1,19 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Templates;
 
-namespace Mcma.Tools.Modules.Dotnet.GoogleCloud
+namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
+
+public class GoogleCloudFunctionApiModuleTemplate : GoogleCloudFunctionModuleTemplate
 {
-    public class GoogleCloudFunctionApiModuleTemplate : GoogleCloudFunctionModuleTemplate, INewProviderApiModuleTemplate
+    public GoogleCloudFunctionApiModuleTemplate(IDotnetProjectCreator dotnetProjectCreator)
+        : base(dotnetProjectCreator)
     {
-        public GoogleCloudFunctionApiModuleTemplate(IDotnetCli dotnetCli)
-            : base(dotnetCli)
-        {
-        }
-
-        public Task CreateApiProjectAsync(NewModuleParameters moduleParameters,
-                                          NewProviderModuleParameters providerParameters,
-                                          string srcFolder)
-            => CreateProjectAsync(moduleParameters, providerParameters, srcFolder, "mcmagcapi");
     }
+
+    public override ModuleType ModuleType => ModuleType.API;
+
+    public override Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters)
+        => DotnetProjectCreator.CreateProjectAsync(parameters, srcFolder, "mcmagcapi");
 }

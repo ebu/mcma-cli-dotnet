@@ -7,6 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Mcma.Tools.Common\Mcma.Tools.Common.csproj" />
+      <ProjectReference Include="..\Mcma.Tools.Git\Mcma.Tools.Git.csproj" />
       <ProjectReference Include="..\Mcma.Tools.ModuleRepositoryClient\Mcma.Tools.ModuleRepositoryClient.csproj" />
     </ItemGroup>
 

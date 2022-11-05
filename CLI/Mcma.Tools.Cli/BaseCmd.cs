@@ -1,27 +1,35 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Tools.Cli
+namespace Mcma.Tools.Cli;
+
+[HelpOption]
+public abstract class BaseCmd
 {
-    [HelpOption]
-    public abstract class BaseCmd
-    {
-        [Option("-d|--dir", CommandOptionType.SingleOrNoValue, Description = "The path to use as the working directory")]
-        public string WorkingDir { get; set; }
+    [Option("-d|--dir <DIR>", Description = "The path to use as the working directory")]
+    public string WorkingDir { get; set; }
         
-        public Task OnExecuteAsync(CommandLineApplication app)
+    public Task OnExecuteAsync(CommandLineApplication app)
+    {
+        if (WorkingDir != null)
         {
-            if (WorkingDir != null)
-                Directory.SetCurrentDirectory(WorkingDir);
-
-            return ExecuteAsync(app);
+            WorkingDir = Path.GetFullPath(WorkingDir, Directory.GetCurrentDirectory());
+            Directory.SetCurrentDirectory(WorkingDir);
         }
+        else
+            WorkingDir = Directory.GetCurrentDirectory();
 
-        protected virtual Task ExecuteAsync(CommandLineApplication app)
-        {
-            app.ShowHelp();
-            return Task.CompletedTask;
-        }
+        if (!Directory.Exists(WorkingDir))
+            throw new Exception($"Directory '{WorkingDir}' not found.");
+
+        return ExecuteAsync(app);
+    }
+
+    protected virtual Task ExecuteAsync(CommandLineApplication app)
+    {
+        app.ShowHelp();
+        return Task.CompletedTask;
     }
 }

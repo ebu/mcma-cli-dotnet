@@ -6,10 +6,10 @@ namespace Mcma.Tools.Dotnet
 {
     public static class DotnetProjectHelper
     {
-        public static void RunForEachProject(Action<(string projectFolder, string projectName, string csprojFile)> run)
+        public static void RunForEachProject(Action<(string projectFolder, string csprojFile)> run)
         {
             foreach (var csprojFile in Directory.GetFiles(".", "*.csproj", SearchOption.AllDirectories))
-                run((Path.GetDirectoryName(csprojFile), Path.GetFileNameWithoutExtension(csprojFile), csprojFile));
+                run((Path.GetDirectoryName(csprojFile), Path.GetFileNameWithoutExtension(csprojFile)));
         }
         
         public static void SetMcmaVersion(string version)

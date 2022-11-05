@@ -3,11 +3,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Packaging;
 
 namespace Mcma.Tools.Modules.Dotnet.Azure
 {
-    public class AzureFunctionAppPackager : IFunctionPackager
+    public class AzureFunctionAppPackager : IDotnetFunctionPackager
     {
         public AzureFunctionAppPackager(IDotnetCli dotnetCli)
         {
@@ -18,17 +17,17 @@ namespace Mcma.Tools.Modules.Dotnet.Azure
         
         public string Type => "AzureFunctionApp";
 
-        public async Task PackageAsync(ModuleContext moduleContext, FunctionInfo functionInfo)
+        public async Task PackageAsync(ModuleProviderContext moduleProviderContext, FunctionInfo functionInfo)
         {
-            var projectFolder = moduleContext.GetFunctionPath(functionInfo.Name);
+            var projectFolder = moduleProviderContext.GetFunctionPath(functionInfo.Name);
             var publishOutput = Path.Combine(projectFolder, "staging");
             try
             {
-                await DotnetCli.RunCmdWithOutputAsync("publish", projectFolder, "-o", publishOutput);
+                await DotnetCli.PublishAsync(projectFolder, outputFolder: publishOutput);
         
-                Directory.CreateDirectory(moduleContext.FunctionsOutputFolder);
+                Directory.CreateDirectory(moduleProviderContext.FunctionsOutputFolder);
         
-                var outputZipFile = moduleContext.GetFunctionOutputZipPath(functionInfo.Name);
+                var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(functionInfo.Name);
 
                 if (File.Exists(outputZipFile))
                     File.Delete(outputZipFile);

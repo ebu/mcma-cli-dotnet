@@ -2,67 +2,102 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Mcma.Serialization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Mcma.Tools.ModuleRepositoryClient.Registry
+namespace Mcma.Tools.ModuleRepositoryClient.Registry;
+
+internal class ModuleRepositoryRegistry : IModuleRepositoryRegistry
 {
-    internal class ModuleRepositoryRegistry : IModuleRepositoryRegistry
+    public ModuleRepositoryRegistry(IOptions<ModuleRepositoryRegistryOptions> options)
     {
-        public ModuleRepositoryRegistry(IOptions<ModuleRepositoryRegistryOptions> options)
+        Options = options.Value ?? new ModuleRepositoryRegistryOptions();
+        Entries = new Lazy<Dictionary<string, ModuleRepositoryRegistryEntry>>(Load);
+    }
+
+    private ModuleRepositoryRegistryOptions Options { get; }
+
+    private string RepositoriesJsonFile => Path.Combine(Options.FolderPath, "repositories.json");
+
+    private Lazy<Dictionary<string, ModuleRepositoryRegistryEntry>> Entries { get; }
+
+    private JObject DefaultJson => new()
+    {
+        ["default"] = new JObject
         {
-            Options = options.Value ?? new ModuleRepositoryRegistryOptions();
-            RepositoriesByName = new Lazy<Dictionary<string, (string, string, string)>>(Load);
+            ["url"] = Options.DefaultRepositoryUrl,
+            ["authType"] = Options.DefaultRepositoryAuthType,
+            ["authContext"] = Options.DefaultRepositoryAuthContext
+        },
+        ["local"] = new JObject
+        {
+            ["url"] = Options.LocalRepositoryPath
+        }
+    };
+
+    private Dictionary<string, ModuleRepositoryRegistryEntry> Load()
+    {
+        if (!File.Exists(RepositoriesJsonFile))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(RepositoriesJsonFile));
+            File.WriteAllText(RepositoriesJsonFile, DefaultJson.ToString(Formatting.Indented));
         }
 
-        private ModuleRepositoryRegistryOptions Options { get; }
+        var json = JObject.Parse(File.ReadAllText(RepositoriesJsonFile));
 
-        private string RepositoriesJsonFile => Path.Combine(Options.FolderPath, "repositories.json");
+        return json.Properties().ToDictionary(prop => prop.Name,
+                                              prop =>
+                                              {
+                                                  var entry = prop.Value.ToObject<ModuleRepositoryRegistryEntry>();
+                                                  if (entry == null)
+                                                      throw new Exception($"Invalid module repository entry '{prop.Name}'");
+                                                  entry.Name = prop.Name;
+                                                  return entry;
+                                              },
+                                              StringComparer.OrdinalIgnoreCase);
+    }
 
-        private Lazy<Dictionary<string, (string url, string authType, string authContext)>> RepositoriesByName { get; }
+    private void Save()
+        =>
+            File.WriteAllText(RepositoriesJsonFile,
+                              Entries.Value
+                                     .Aggregate(new JObject(),
+                                                (json, kvp) =>
+                                                {
+                                                    var entryJson = kvp.Value.ToMcmaJsonObject();
+                                                    entryJson.Remove(nameof(ModuleRepositoryRegistryEntry.Name));
+                                                    json[kvp.Key] = entryJson;
+                                                    return json;
+                                                })
+                                     .ToString(Formatting.Indented));
 
-        private JObject DefaultJson => new()
-        {
-            ["default"] = new JObject
-            {
-                ["url"] = Options.DefaultRepositoryUrl,
-                ["authType"] = Options.DefaultRepositoryAuthType,
-                ["authContext"] = Options.DefaultRepositoryAuthContext
-            },
-            ["local"] = new JObject
-            {
-                ["url"] = Options.LocalRepositoryPath
-            }
-        };
+    public bool TryAdd(ModuleRepositoryRegistryEntry entry)
+    {
+        if (Entries.Value.ContainsKey(entry.Name))
+            return false;
+            
+        Entries.Value[entry.Name] = entry;
+        Save();
+        return true;
+    }
 
-        private Dictionary<string, (string url, string authType, string authContext)> Load()
-        {
-            if (!File.Exists(RepositoriesJsonFile))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(RepositoriesJsonFile));
-                File.WriteAllText(RepositoriesJsonFile, DefaultJson.ToString(Formatting.Indented));
-            }
+    public bool TryUpdate(string name, Action<ModuleRepositoryRegistryEntry> update)
+    {
+        if (!Entries.Value.ContainsKey(name))
+            return false;
 
-            var json = JObject.Parse(File.ReadAllText(RepositoriesJsonFile));
+        update(Entries.Value[name]);
+        Save();
+        return true;
+    }
 
-            return json.Properties().ToDictionary(x => x.Name,
-                                                  x => (
-                                                           x.Value["url"]?.Value<string>(),
-                                                           x.Value["authType"]?.Value<string>(),
-                                                           x.Value["authContext"]?.Value<string>()
-                                                       ),
-                                                  StringComparer.OrdinalIgnoreCase);
-        }
-        
-        public ModuleRepositoryRegistryEntry Get(string name)
-        {
-            if (!RepositoriesByName.Value.ContainsKey(name))
-                throw new Exception($"Repository with name '{name}' not configured.");
+    public ModuleRepositoryRegistryEntry Get(string name)
+    {
+        if (!Entries.Value.ContainsKey(name))
+            throw new Exception($"Repository with name '{name}' not configured.");
 
-            var (url, authType, authContext) = RepositoriesByName.Value[name];
-
-            return new ModuleRepositoryRegistryEntry(name, url, authType, authContext);
-        }
+        return Entries.Value[name];
     }
 }

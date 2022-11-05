@@ -1,0 +1,8 @@
+task copy{{projectNamePascalCase}}(type: Copy) {
+    dependsOn "{{projectNameSnakeCase}}:build"
+    from file("{{projectNameSnakeCase}}/build/dist/function.zip")
+    into "build/staging/functions"
+    rename { "{{projectNameSnakeCase}}.zip" }
+}
+
+build.dependsOn copy{{projectNamePascalCase}}

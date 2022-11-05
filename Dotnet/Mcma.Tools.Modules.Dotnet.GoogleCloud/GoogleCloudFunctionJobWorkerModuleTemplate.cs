@@ -1,19 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Templates;
 
-namespace Mcma.Tools.Modules.Dotnet.GoogleCloud
+namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
+
+public class GoogleCloudFunctionJobWorkerModuleTemplate : GoogleCloudFunctionModuleTemplate
 {
-    public class GoogleCloudFunctionJobWorkerModuleTemplate : GoogleCloudFunctionApiModuleTemplate, INewProviderJobWorkerModuleTemplate
+    public GoogleCloudFunctionJobWorkerModuleTemplate(IDotnetProjectCreator dotnetProjectCreator)
+        : base(dotnetProjectCreator)
     {
-        public GoogleCloudFunctionJobWorkerModuleTemplate(IDotnetCli dotnetCli)
-            : base(dotnetCli)
-        {
-        }
-
-        public Task CreateWorkerProjectAsync(NewModuleParameters moduleParameters,
-                                             NewProviderModuleParameters providerParameters,
-                                             string srcFolder)
-            => CreateProjectAsync(moduleParameters, providerParameters, srcFolder, "mcmagcjobwrkr");
     }
+
+    public override ModuleType ModuleType => ModuleType.JobWorker;
+
+    public override Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters)
+        => DotnetProjectCreator.CreateProjectAsync(parameters, srcFolder, "mcmagcjobwrkr");
 }

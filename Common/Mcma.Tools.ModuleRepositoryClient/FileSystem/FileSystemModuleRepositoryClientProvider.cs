@@ -1,12 +1,13 @@
 ﻿using System.Text.RegularExpressions;
-using Mcma.Client;
+using Mcma.Client.Auth;
+using Mcma.Tools.ModuleRepositoryClient.Registry;
 
-namespace Mcma.Tools.ModuleRepositoryClient.FileSystem
+namespace Mcma.Tools.ModuleRepositoryClient.FileSystem;
+
+internal class FileSystemModuleRepositoryClientProvider : IModuleRepositoryClientProvider
 {
-    internal class FileSystemModuleRepositoryClientProvider : IModuleRepositoryClientProvider
-    {
-        public bool IsSupportedUrl(string url) => Regex.IsMatch(url, @"^((\/)|([A-Za-z]:)|(\\)).+");
+    public bool IsSupportedUrl(string url) => Regex.IsMatch(url, @"^((\/)|([A-Za-z]:)|(\\)).+");
 
-        public IModuleRepositoryClient GetClient(string url, IAuthenticator authenticator) => new FileSystemModuleRepositoryClient(url);
-    }
+    public IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator authenticator) =>
+        new FileSystemModuleRepositoryClient(entry.Url);
 }

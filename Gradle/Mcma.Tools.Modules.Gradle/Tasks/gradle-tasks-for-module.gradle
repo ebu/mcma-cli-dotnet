@@ -1,0 +1,13 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task build(type: Zip) {
+    from "build/staging"
+    archiveFileName = "module.zip"
+    destinationDirectory = file("build/dist")
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+task clean(type: Delete) {
+    delete "build"
+}

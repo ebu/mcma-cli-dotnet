@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Templates;
 
 namespace Mcma.Tools.Modules.Dotnet.Azure
 {
-    public abstract class AzureFunctionAppModuleTemplate : INewProviderModuleTemplate
+    public abstract class AzureFunctionAppModuleTemplate : IDotnetNewProviderModuleTemplate
     {
-        protected AzureFunctionAppModuleTemplate(IDotnetCli dotnetCli)
+        protected AzureFunctionAppModuleTemplate(IDotnetProjectCreator dotnetProjectCreator)
         {
-            DotnetCli = dotnetCli ?? throw new ArgumentNullException(nameof(dotnetCli));
+            DotnetProjectCreator = dotnetProjectCreator ?? throw new ArgumentNullException(nameof(dotnetProjectCreator));
         }
         
-        protected IDotnetCli DotnetCli { get; }
+        protected IDotnetProjectCreator DotnetProjectCreator { get; }
+
+        public abstract ModuleType ModuleType { get; }
 
         public Provider Provider => Provider.AWS;
 
@@ -39,34 +39,6 @@ provider ""azurerm"" {{
 
         public virtual string GetOutputsTf(IDictionary<string, string> args) => string.Empty;
 
-
-        protected virtual async Task CreateProjectAsync(NewModuleParameters moduleParameters,
-                                                        NewProviderModuleParameters providerParameters,
-                                                        string srcFolder,
-                                                        string template,
-                                                        bool addJobTypeArg = false)
-        {
-            var dotnetNewArgs = new List<string>
-            {
-                template,
-                "-o",
-                srcFolder,
-                "--moduleName",
-                moduleParameters.NameInPascalCase,
-                "--mcmaNamespace",
-                moduleParameters.NamespaceInPascalCase
-            };
-
-            if (addJobTypeArg)
-                dotnetNewArgs.AddRange(new[]
-                {
-                    "--jobType",
-                    moduleParameters.JobType
-                });
-
-            Console.WriteLine("Running dotnet new " + string.Join(" ", dotnetNewArgs));
-
-            await DotnetCli.RunCmdWithOutputAsync("new", dotnetNewArgs.ToArray());
-        }
+        public abstract Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters);
     }
 }

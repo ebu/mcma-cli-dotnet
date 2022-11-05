@@ -1,23 +1,17 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
 
-namespace Mcma.Tools.ModuleRepositoryClient.Registry
+namespace Mcma.Tools.ModuleRepositoryClient.Registry;
+
+public class  ModuleRepositoryRegistryEntry
 {
-    public class ModuleRepositoryRegistryEntry
-    {
-        public ModuleRepositoryRegistryEntry(string name, string url, string authType = null, string authContext = null)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Url = url ?? throw new ArgumentNullException(nameof(url));
-            AuthType = authType;
-            AuthContext = authContext;
-        }
+    public string Name { get; set; }
         
-        public string Name { get; }
+    public string Url { get; set; }
         
-        public string Url { get; }
+    public string AuthType { get; set; }
         
-        public string AuthType { get; }
-        
-        public string AuthContext { get; }
-    }
+    public string AuthContext { get; set; }
+
+    public JObject Properties { get; set; }
 }

@@ -1,14 +1,18 @@
 ﻿using System.Threading.Tasks;
-using Mcma.Tools.Modules.Templates;
 
-namespace Mcma.Tools.Modules
+namespace Mcma.Tools.Modules;
+
+public interface IMcmaModulesTool
 {
-    public interface IMcmaModulesTool
-    {
-        Task NewAsync(string template, NewModuleParameters newModuleParameters);
+    Task NewAsync(string rootFolder, string buildSystem, ModuleType moduleType, NewModuleParameters newModuleParameters);
 
-        Task PackageAsync(Version version, string provider = null);
+    Task PackageProviderAsync(string rootFolder, Provider provider);
 
-        Task PublishAsync(string repositoryName, Version version, string provider = null);
-    }
+    Task PackageAsync(string rootFolder, Version version = null);
+
+    Task PublishProviderAsync(string rootFolder, Provider provider, string repositoryName);
+
+    Task PublishAsync(string rootFolder, string repositoryName, Version version = null);
+
+    Task SetMcmaVersionAsync(string rootFolder, Version mcmaVersion);
 }

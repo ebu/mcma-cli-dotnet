@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
+        <ProjectReference Include="..\Mcma.Tools.Gradle\Mcma.Tools.Gradle.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Tasks" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Include="Tasks\*.gradle" />
+        <EmbeddedResource Include="Config\*.json" />
+    </ItemGroup>
+
+</Project>

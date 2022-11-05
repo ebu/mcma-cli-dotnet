@@ -2,41 +2,73 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Client;
+using Mcma.Client.Auth;
+using Mcma.Serialization;
 using Mcma.Tools.ModuleRepositoryClient.Registry;
 
-namespace Mcma.Tools.ModuleRepositoryClient
+namespace Mcma.Tools.ModuleRepositoryClient;
+
+internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
 {
-    internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
+    public ModuleRepositoryClientManager(IModuleRepositoryRegistry registry,
+                                         IAuthProvider authProvider,
+                                         IEnumerable<IModuleRepositoryClientProvider> clientProviders)
     {
-        public ModuleRepositoryClientManager(IModuleRepositoryRegistry registry,
-                                             IAuthProvider authProvider,
-                                             IEnumerable<IModuleRepositoryClientProvider> clientProviders)
+        Registry = registry ?? throw new ArgumentNullException(nameof(registry));
+        AuthProvider = authProvider ?? throw new ArgumentNullException(nameof(authProvider));
+        ClientProviders = clientProviders?.ToArray() ?? Array.Empty<IModuleRepositoryClientProvider>();
+    }
+
+    private IModuleRepositoryRegistry Registry { get; }
+
+    private IAuthProvider AuthProvider { get; }
+
+    private IModuleRepositoryClientProvider[] ClientProviders { get; }
+
+    public void AddRepository(string name,
+                              string url,
+                              string authType = null,
+                              string authContext = null,
+                              IDictionary<string, string> properties = null)
+    {
+        var entry = new ModuleRepositoryRegistryEntry
         {
-            Registry = registry ?? throw new ArgumentNullException(nameof(registry));
-            AuthProvider = authProvider ?? throw new ArgumentNullException(nameof(authProvider));
-            ClientProviders = clientProviders?.ToArray() ?? new IModuleRepositoryClientProvider[0];
+            Name = name,
+            Url = url,
+            AuthType = authType,
+            AuthContext = authContext,
+            Properties = properties?.ToMcmaJsonObject()
+        };
+
+        if (!Registry.TryAdd(entry))
+            throw new Exception($"Unable to add repository '{entry.Name}' because it has already been configured.");
+    }
+
+
+    public void SetRepositoryAuth(string name, string authType, string authContext = null)
+    {
+        void Update(ModuleRepositoryRegistryEntry x)
+        {
+            x.AuthType = authType;
+            x.AuthContext = authContext;
         }
 
-        private IModuleRepositoryRegistry Registry { get; }
+        if (!Registry.TryUpdate(name, Update))
+            throw new Exception($"Unable to update repository '{name}' as it has not yet been configured.");
+    }
 
-        private IAuthProvider AuthProvider { get; }
+    public async Task<IModuleRepositoryClient> GetClientAsync(string name)
+    {
+        var repositoryEntry = Registry.Get(name);
 
-        private IModuleRepositoryClientProvider[] ClientProviders { get; }
+        var clientProvider = ClientProviders.FirstOrDefault(x => x.IsSupportedUrl(repositoryEntry.Url));
+        if (clientProvider == null)
+            throw new Exception($"Url '{repositoryEntry.Url}' is not supported.");
 
-        public async Task<IModuleRepositoryClient> GetClientAsync(string name)
-        {
-            var repositoryEntry = Registry.Get(name);
+        IAuthenticator authenticator = null;
+        if (repositoryEntry.AuthType != null)
+            authenticator = await AuthProvider.GetAsync(repositoryEntry.AuthType, repositoryEntry.AuthContext);
 
-            var clientProvider = ClientProviders.FirstOrDefault(x => x.IsSupportedUrl(repositoryEntry.Url));
-            if (clientProvider == null)
-                throw new Exception($"Url '{repositoryEntry.Url}' is not supported.");
-
-            IAuthenticator authenticator = null;
-            if (repositoryEntry.AuthType != null)
-                authenticator = await AuthProvider.GetAsync(repositoryEntry.AuthType, repositoryEntry.AuthContext);
-
-            return clientProvider.GetClient(repositoryEntry.Url, authenticator);
-        }
+        return clientProvider.GetClient(repositoryEntry, authenticator);
     }
 }

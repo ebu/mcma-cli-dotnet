@@ -1,9 +1,9 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 
-namespace Mcma.Tools.Cli.Project
+namespace Mcma.Tools.Cli.Project;
+
+[Command("project")]
+[Subcommand(typeof(AddModule))]
+public class Project : BaseCmd
 {
-    [Command("project")]
-    public class Project : BaseCmd
-    {
-    }
 }

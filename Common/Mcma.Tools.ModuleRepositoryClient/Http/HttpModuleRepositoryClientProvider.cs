@@ -1,24 +1,24 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Http;
-using Mcma.Client;
+using Mcma.Client.Auth;
+using Mcma.Client.Http;
+using Mcma.Tools.ModuleRepositoryClient.Registry;
 
-namespace Mcma.Tools.ModuleRepositoryClient.Http
+namespace Mcma.Tools.ModuleRepositoryClient.Http;
+
+internal class HttpModuleRepositoryClientProvider : IModuleRepositoryClientProvider
 {
-    internal class HttpModuleRepositoryClientProvider : IModuleRepositoryClientProvider
+    private ConcurrentDictionary<string, HttpClient> HttpClients { get; } = new();
+
+    public bool IsSupportedUrl(string url) => url?.StartsWith("http", StringComparison.OrdinalIgnoreCase) ?? false;
+
+    private static HttpClient CreateHttpClient(ModuleRepositoryRegistryEntry entry)
+        => new(entry.Properties?.ToObject<HttpClientHandler>() ?? new HttpClientHandler());
+
+    public IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator authenticator)
     {
-        public HttpModuleRepositoryClientProvider(IHttpClientFactory httpClientFactory)
-        {
-            HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-        }
-
-        private IHttpClientFactory HttpClientFactory { get; }
-
-        public bool IsSupportedUrl(string url) => url?.StartsWith("http", StringComparison.OrdinalIgnoreCase) ?? false;
-
-        public IModuleRepositoryClient GetClient(string url, IAuthenticator authenticator)
-        {
-            var httpClient = HttpClientFactory.CreateClient();
-            return new HttpModuleRepositoryClient(new McmaHttpClient(httpClient, authenticator), httpClient, url);
-        }
+        var httpClient = HttpClients.GetOrAdd(entry.Name, _ => CreateHttpClient(entry));
+        return new HttpModuleRepositoryClient(new McmaHttpClient(httpClient, authenticator), httpClient, entry.Url);
     }
 }

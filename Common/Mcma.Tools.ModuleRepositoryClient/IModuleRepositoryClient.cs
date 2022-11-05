@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Mcma.Model;
 using Newtonsoft.Json.Linq;
 
-namespace Mcma.Tools.ModuleRepositoryClient
+namespace Mcma.Tools.ModuleRepositoryClient;
+
+public interface IModuleRepositoryClient
 {
-    public interface IModuleRepositoryClient
-    {
-        Task PublishAsync(JObject moduleJson, string modulePackageFilePath);
-    }
+    Task PublishAsync(Module moduleJson, string modulePackageFilePath);
+
+    Task<QueryResults<Module>> SearchAsync(ModuleSearchCriteria searchCriteria);
 }

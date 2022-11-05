@@ -1,19 +1,20 @@
 ﻿using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Templates;
 
 namespace Mcma.Tools.Modules.Dotnet.Azure
 {
-    public class AzureFunctionAppWorkerModuleTemplate : AzureFunctionAppApiModuleTemplate, INewProviderJobWorkerModuleTemplate
+    public class AzureFunctionAppWorkerModuleTemplate : AzureFunctionAppModuleTemplate
     {
-        public AzureFunctionAppWorkerModuleTemplate(IDotnetCli dotnetCli)
-            : base(dotnetCli)
+        public AzureFunctionAppWorkerModuleTemplate(IDotnetProjectCreator dotnetProjectCreator)
+            : base(dotnetProjectCreator)
         {
         }
 
-        public Task CreateWorkerProjectAsync(NewModuleParameters moduleParameters,
-                                             NewProviderModuleParameters providerParameters,
-                                             string srcFolder)
-            => CreateProjectAsync(moduleParameters, providerParameters, srcFolder, "mcmazworker", true);
+        public override ModuleType ModuleType => ModuleType.JobWorker;
+
+        public override async Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters)
+        {
+            await DotnetProjectCreator.CreateProjectAsync(parameters, srcFolder, "mcmazapi");
+            await DotnetProjectCreator.CreateProjectAsync(parameters, srcFolder, "mcmazworker", true);
+        }
     }
 }

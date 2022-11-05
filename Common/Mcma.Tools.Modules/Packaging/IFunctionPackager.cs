@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Tools.Modules.Packaging
+namespace Mcma.Tools.Modules.Packaging;
+
+public interface IFunctionPackager
 {
-    public interface IFunctionPackager
-    {
-        string Type { get; }
+    string Type { get; }
         
-        Task PackageAsync(ModuleContext moduleContext, FunctionInfo functionInfo);
-    }
+    Task PackageAsync(ModuleProviderContext moduleProviderContext, FunctionInfo functionInfo);
 }

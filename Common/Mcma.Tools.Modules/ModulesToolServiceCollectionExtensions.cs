@@ -1,14 +1,13 @@
-﻿using Mcma.Tools.Modules.Packaging;
-using Mcma.Tools.Modules.Publishing;
+﻿using Mcma.Tools.Git;
+using Mcma.Tools.Modules.Packaging;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Mcma.Tools.Modules
+namespace Mcma.Tools.Modules;
+
+public static class ModulesToolServiceCollectionExtensions
 {
-    public static class ModulesToolServiceCollectionExtensions
-    {
-        public static IServiceCollection AddMcmaModulesTool(this IServiceCollection services)
-            => services.AddSingleton<IModulePackager, ModulePackager>()
-                       .AddSingleton<IModulePublisher, ModulePublisher>()
-                       .AddSingleton<IMcmaModulesTool, McmaModulesTool>();
-    }
+    public static IServiceCollection AddMcmaModulesTool(this IServiceCollection services)
+        => services.AddGitCli()
+                   .AddSingleton<IModulePackager, ModulePackager>()
+                   .AddSingleton<IMcmaModulesTool, McmaModulesTool>();
 }

@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Templates;
 
-namespace Mcma.Tools.Modules.Dotnet.GoogleCloud
+namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
+
+public abstract class GoogleCloudFunctionModuleTemplate : IDotnetNewProviderModuleTemplate
 {
-    public abstract class GoogleCloudFunctionModuleTemplate : INewProviderModuleTemplate
+    protected GoogleCloudFunctionModuleTemplate(IDotnetProjectCreator dotnetProjectCreator)
     {
-        protected GoogleCloudFunctionModuleTemplate(IDotnetCli dotnetCli)
-        {
-            DotnetCli = dotnetCli ?? throw new ArgumentNullException(nameof(dotnetCli));
-        }
+        DotnetProjectCreator = dotnetProjectCreator ?? throw new ArgumentNullException(nameof(dotnetProjectCreator));
+    }
         
-        protected IDotnetCli DotnetCli { get; }
+    protected IDotnetProjectCreator DotnetProjectCreator { get; }
 
-        public Provider Provider => Provider.AWS;
+    public Provider Provider => Provider.AWS;
 
-        public virtual string GetModuleTf(IDictionary<string, string> args)
-        {
-            return $@"terraform {{
+    public abstract ModuleType ModuleType { get; }
+
+    public virtual string GetModuleTf(IDictionary<string, string> args)
+    {
+        return $@"terraform {{
   required_providers {{
     google = {{
       source  = ""hashicorp/google""
@@ -32,40 +32,11 @@ namespace Mcma.Tools.Modules.Dotnet.GoogleCloud
 provider ""google"" {{
   {string.Join(Environment.NewLine + "  ", args.Select(kvp => $"{kvp.Key} = \"{kvp.Value}\""))}
 }}";
-        }
-
-        public virtual string GetVariablesTf(IDictionary<string, string> args) => string.Empty;
-
-        public virtual string GetOutputsTf(IDictionary<string, string> args) => string.Empty;
-
-
-        protected virtual async Task CreateProjectAsync(NewModuleParameters moduleParameters,
-                                                        NewProviderModuleParameters providerParameters,
-                                                        string srcFolder,
-                                                        string template,
-                                                        bool addJobTypeArg = false)
-        {
-            var dotnetNewArgs = new List<string>
-            {
-                template,
-                "-o",
-                srcFolder,
-                "--moduleName",
-                moduleParameters.NameInPascalCase,
-                "--mcmaNamespace",
-                moduleParameters.NamespaceInPascalCase
-            };
-
-            if (addJobTypeArg)
-                dotnetNewArgs.AddRange(new[]
-                {
-                    "--jobType",
-                    moduleParameters.JobType
-                });
-
-            Console.WriteLine("Running dotnet new " + string.Join(" ", dotnetNewArgs));
-
-            await DotnetCli.RunCmdWithOutputAsync("new", dotnetNewArgs.ToArray());
-        }
     }
+
+    public virtual string GetVariablesTf(IDictionary<string, string> args) => string.Empty;
+
+    public virtual string GetOutputsTf(IDictionary<string, string> args) => string.Empty;
+
+    public abstract Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters);
 }

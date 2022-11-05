@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Mcma.Tools.Projects
+namespace Mcma.Tools.Projects;
+
+internal class McmaProjectsTool : IMcmaProjectsTool
 {
-    internal class McmaProjectsTool : IMcmaProjectsTool
+    public McmaProjectsTool(IMcmaProjectModulesTool modules)
     {
-        public McmaProjectsTool(IMcmaProjectModulesTool modules)
-        {
-            Modules = modules ?? throw new ArgumentNullException(nameof(modules));
-        }
+        Modules = modules ?? throw new ArgumentNullException(nameof(modules));
+    }
 
-        public IMcmaProjectModulesTool Modules { get; }
+    public IMcmaProjectModulesTool Modules { get; }
 
-        public Task NewAsync(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task NewAsync(string name)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task DeployAsync()
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task DeployAsync()
+    {
+        throw new System.NotImplementedException();
     }
 }

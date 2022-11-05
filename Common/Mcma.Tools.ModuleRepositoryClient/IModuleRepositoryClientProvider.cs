@@ -1,11 +1,11 @@
-﻿using Mcma.Client;
+﻿using Mcma.Client.Auth;
+using Mcma.Tools.ModuleRepositoryClient.Registry;
 
-namespace Mcma.Tools.ModuleRepositoryClient
+namespace Mcma.Tools.ModuleRepositoryClient;
+
+internal interface IModuleRepositoryClientProvider
 {
-    internal interface IModuleRepositoryClientProvider
-    {
-        bool IsSupportedUrl(string url);
+    bool IsSupportedUrl(string url);
 
-        IModuleRepositoryClient GetClient(string url, IAuthenticator authenticator);
-    }
+    IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator authenticator);
 }
