@@ -1,6 +1,5 @@
 ﻿using System;
 using Mcma.Client;
-using Mcma.Client.Aws;
 using Mcma.Tools.ModuleRepositoryClient.FileSystem;
 using Mcma.Tools.ModuleRepositoryClient.Http;
 using Mcma.Tools.ModuleRepositoryClient.Registry;
@@ -16,7 +15,7 @@ public static class ModuleRepositoryClientServiceCollectionExtensions
         if (configure != null)
             services.Configure(configure);
 
-        return services.AddMcmaClient(x => x.Auth.AddAws4Auth())
+        return services.AddMcmaClient(x => x.Auth.AddModuleRepositoryAuth())
                        .AddSingleton<IModuleRepositoryRegistry, ModuleRepositoryRegistry>()
                        .AddSingleton<IModuleRepositoryClientProvider, FileSystemModuleRepositoryClientProvider>()
                        .AddSingleton<IModuleRepositoryClientProvider, HttpModuleRepositoryClientProvider>()

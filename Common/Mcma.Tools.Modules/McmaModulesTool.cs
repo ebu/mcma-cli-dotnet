@@ -78,23 +78,23 @@ internal class McmaModulesTool : IMcmaModulesTool
                 
             var moduleJsonPath = Path.Combine(providerFolder, "module.json");
             var moduleJson = JObject.FromObject(module).ToString(Formatting.Indented);
-            File.WriteAllText(moduleJsonPath, moduleJson);
+            await File.WriteAllTextAsync(moduleJsonPath, moduleJson);
 
             var modulePackageJsonPath = Path.Combine(providerFolder, "module-package.json");
             var modulePackageJson = JObject.FromObject(new { functions = new { } }).ToString(Formatting.Indented);
-            File.WriteAllText(modulePackageJsonPath, modulePackageJson);
+            await File.WriteAllTextAsync(modulePackageJsonPath, modulePackageJson);
                 
             var moduleTfPath = Path.Combine(providerFolder, "module.tf");
             var moduleTf = tfScriptProvider.GetModuleTf(providerParams.Args);
-            File.WriteAllText(moduleTfPath, moduleTf);
+            await File.WriteAllTextAsync(moduleTfPath, moduleTf);
                 
             var variablesTfPath = Path.Combine(providerFolder, "variables.tf");
             var variablesTf = tfScriptProvider.GetVariablesTf(providerParams.Args);
-            File.WriteAllText(variablesTfPath, variablesTf);
+            await File.WriteAllTextAsync(variablesTfPath, variablesTf);
                 
             var outputsTfPath = Path.Combine(providerFolder, "outputs.tf");
             var outputsTf = tfScriptProvider.GetOutputsTf(providerParams.Args);
-            File.WriteAllText(outputsTfPath, outputsTf);
+            await File.WriteAllTextAsync(outputsTfPath, outputsTf);
 
             var srcFolder = parameters.GetProviderSrcDir(providerParams.Provider);
             Directory.CreateDirectory(srcFolder);
@@ -136,7 +136,7 @@ internal class McmaModulesTool : IMcmaModulesTool
             
         await Packager.PackageAsync(providerContext, GetBuildSystem(moduleContext));
 
-        var client = await RepositoryClientManager.GetClientAsync(repositoryName);
+        var client = RepositoryClientManager.GetClient(repositoryName);
 
         await client.PublishAsync(providerContext.GetProviderSpecificModule(), providerContext.OutputZipFile);
     }
@@ -151,7 +151,7 @@ internal class McmaModulesTool : IMcmaModulesTool
         {
             await Packager.PackageAsync(providerContext, GetBuildSystem(moduleContext));
 
-            var client = await RepositoryClientManager.GetClientAsync(repositoryName);
+            var client = RepositoryClientManager.GetClient(repositoryName);
 
             await client.PublishAsync(providerContext.GetProviderSpecificModule(), providerContext.OutputZipFile);
         }

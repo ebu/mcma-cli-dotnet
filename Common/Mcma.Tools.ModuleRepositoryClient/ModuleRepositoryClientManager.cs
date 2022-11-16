@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Mcma.Client.Auth;
 using Mcma.Serialization;
 using Mcma.Tools.ModuleRepositoryClient.Registry;
@@ -57,7 +56,7 @@ internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
             throw new Exception($"Unable to update repository '{name}' as it has not yet been configured.");
     }
 
-    public async Task<IModuleRepositoryClient> GetClientAsync(string name)
+    public IModuleRepositoryClient GetClient(string name)
     {
         var repositoryEntry = Registry.Get(name);
 
@@ -67,7 +66,7 @@ internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
 
         IAuthenticator authenticator = null;
         if (repositoryEntry.AuthType != null)
-            authenticator = await AuthProvider.GetAsync(repositoryEntry.AuthType, repositoryEntry.AuthContext);
+            authenticator = AuthProvider.Get(repositoryEntry.AuthType, "ModuleRepository", nameof(Module));
 
         return clientProvider.GetClient(repositoryEntry, authenticator);
     }

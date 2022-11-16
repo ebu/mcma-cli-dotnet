@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Mcma.Tools.Modules.Gradle.Aws
 {
-    public class AwsLambdaFunctionGradleModuleTemplate : IGradleNewProviderModuleTemplate
+    public abstract class AwsLambdaFunctionGradleModuleTemplate : IGradleNewProviderModuleTemplate
     {
-        public ModuleType ModuleType { get; }
+        public abstract ModuleType ModuleType { get; }
 
-        public Provider Provider { get; }
+        public Provider Provider => Provider.AWS;
 
         public Task CreateProjectsAsync(string srcFolder, NewModuleParameters parameters, NewProviderModuleParameters providerParameters)
         {

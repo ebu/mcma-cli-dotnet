@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools.ModuleRepositoryClient.Registry;
 
-public class  ModuleRepositoryRegistryEntry
+public class ModuleRepositoryRegistryEntry
 {
     public string Name { get; set; }
         

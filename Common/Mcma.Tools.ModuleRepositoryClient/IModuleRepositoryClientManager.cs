@@ -13,5 +13,5 @@ public interface IModuleRepositoryClientManager
 
     void SetRepositoryAuth(string name, string authType, string authContext = null);
         
-    Task<IModuleRepositoryClient> GetClientAsync(string name);
+    IModuleRepositoryClient GetClient(string name);
 }

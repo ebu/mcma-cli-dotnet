@@ -12,15 +12,18 @@ namespace Mcma.Tools.Modules.Gradle;
 public class GradleModuleBuildSystem : IModuleBuildSystem
 {
     public const string Name = "gradle";
-        
-    public GradleModuleBuildSystem(IGradleCli gradleCli, IGradleWrapperCli gradleWrapperCli, IEnumerable<IGradleFunctionPackager> functionPackagers, IEnumerable<IGradleNewProviderModuleTemplate> templates)
+
+    public GradleModuleBuildSystem(IGradleCli gradleCli,
+                                   IGradleWrapperCli gradleWrapperCli,
+                                   IEnumerable<IGradleFunctionPackager> functionPackagers,
+                                   IEnumerable<IGradleNewProviderModuleTemplate> templates)
     {
         GradleCli = gradleCli ?? throw new ArgumentNullException(nameof(gradleCli));
         GradleWrapperCli = gradleWrapperCli ?? throw new ArgumentNullException(nameof(gradleWrapperCli));
         FunctionPackagers = functionPackagers?.ToArray() ?? Array.Empty<IGradleFunctionPackager>();
         Templates = templates?.ToArray() ?? Array.Empty<IGradleNewProviderModuleTemplate>();
     }
-        
+
     private IGradleCli GradleCli { get; }
         
     private IGradleWrapperCli GradleWrapperCli { get; }
