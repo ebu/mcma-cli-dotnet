@@ -100,13 +100,13 @@ internal class ModuleRepositoryAuthenticator : IAuthenticator
     {
         var tokens = TokenStorage.Get();
 
-        if (!IsValidToken(tokens?.AccessToken))
+        if (!IsValidToken(tokens?.IdToken))
         {
             tokens = await GetTokensAsync(tokens, cancellationToken);
             
             TokenStorage.Set(tokens);
         }
 
-        request.Headers.Authorization = AuthenticationHeaderValue.Parse($"Bearer {tokens!.AccessToken}");
+        request.Headers.Authorization = AuthenticationHeaderValue.Parse($"Bearer {tokens!.IdToken}");
     }
 }

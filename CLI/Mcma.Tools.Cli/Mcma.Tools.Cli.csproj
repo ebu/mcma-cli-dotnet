@@ -6,6 +6,8 @@
         <AssemblyName>mcma</AssemblyName>
         <LangVersion>latest</LangVersion>
         <Nullable>disable</Nullable>
+        <PublishSingleFile>true</PublishSingleFile>
+        <PublishReadyToRun>true</PublishReadyToRun>
     </PropertyGroup>
 
     <ItemGroup>

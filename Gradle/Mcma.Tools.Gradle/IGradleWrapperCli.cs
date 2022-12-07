@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Mcma.Tools.Gradle
+namespace Mcma.Tools.Gradle;
+
+public interface IGradleWrapperCli
 {
-    public interface IGradleWrapperCli
-    {
-        Task<(string stdOut, string stdErr)> ExecuteTaskAsync(string taskName, params string[] args);
-    }
+    Task<(string stdOut, string stdErr)> ExecuteTaskAsync(string taskName, params string[] args);
 }

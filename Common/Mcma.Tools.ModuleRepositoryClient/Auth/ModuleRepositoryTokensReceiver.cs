@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-internal class ModuleRepositoryTokenReceiver : IModuleRepositoryTokensReceiver
+internal class ModuleRepositoryTokensReceiver : IModuleRepositoryTokensReceiver
 {
     private ClientWebSocket ClientWebSocket { get; } = new();
 

@@ -15,7 +15,7 @@ public class AwsLambdaDotnetFunctionPackager : IDotnetFunctionPackager
     }
         
     private IDotnetCli DotnetCli { get; }
-        
+
     public string Type => "AwsLambdaFunction";
         
     private async Task EnsureLambdaToolsAvailableAsync(ModuleProviderContext moduleProviderContext)
@@ -45,12 +45,12 @@ public class AwsLambdaDotnetFunctionPackager : IDotnetFunctionPackager
     {
         await EnsureLambdaToolsAvailableAsync(moduleProviderContext);
 
-        var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(function.Name);
+        var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(function);
 
         var initialDir = Directory.GetCurrentDirectory();
         try
         {
-            Directory.SetCurrentDirectory(moduleProviderContext.GetFunctionPath(function.Name));
+            Directory.SetCurrentDirectory(moduleProviderContext.GetFunctionPath(function));
         
             await DotnetCli.RunCustomAsync("lambda", "package", Path.Combine(initialDir, outputZipFile));
         }

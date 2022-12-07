@@ -13,7 +13,6 @@ internal class CliExecutor : ICliExecutor
         var startInfo = new ProcessStartInfo(cmd, string.Join(" ", args));
         if (!showOutput)
         {
-            startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
         }

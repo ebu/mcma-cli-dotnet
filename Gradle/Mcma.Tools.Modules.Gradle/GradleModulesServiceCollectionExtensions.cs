@@ -5,5 +5,6 @@ namespace Mcma.Tools.Modules.Gradle;
 public static class GradleModulesServiceCollectionExtensions
 {
     public static IServiceCollection AddGradleModules(this IServiceCollection services)
-        => services.AddSingleton<IModuleBuildSystem, GradleModuleBuildSystem>();
+        => services.AddSingleton<IGradleFunctionPackager, GradleFunctionPackager>()
+                   .AddSingleton<IModuleBuildSystem, GradleModuleBuildSystem>();
 }

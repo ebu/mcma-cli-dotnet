@@ -18,7 +18,7 @@ public class GoogleCloudFunctionPackager : IDotnetFunctionPackager
     private static bool ShouldIncludeFolder(DirectoryInfo dir)
         => !ExcludeFolders.Any(f => f.Equals(dir?.Name, StringComparison.OrdinalIgnoreCase));
 
-    public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
+    private static void CopyAll(DirectoryInfo source, DirectoryInfo target)
     {
         Directory.CreateDirectory(target.FullName);
 
@@ -29,23 +29,23 @@ public class GoogleCloudFunctionPackager : IDotnetFunctionPackager
             CopyAll(sourceSubDir, target.CreateSubdirectory(sourceSubDir.Name));
     }
 
-    private void FlattenAndCopyDependencies(string csProjFile, string stagingFolder)
+    private static void FlattenAndCopyDependencies(string csProjFile, string stagingFolder)
     {
         var csProjFolder = Path.GetDirectoryName(csProjFile);
         var csProjContent = File.ReadAllText(csProjFile);
 
-        foreach (var projectCapture in ProjectRefRegex.Matches(csProjContent).OfType<Match>().Select(m => m.Groups[1].Captures[0]))
+        foreach (var projectCapture in ProjectRefRegex.Matches(csProjContent).Select(m => m.Groups[1].Captures[0]))
         {
             // regex capture should be the relative path from the current project folder
             var dependencyCsProjPathRelative = projectCapture.Value;
-                    
+
             // the last two parts of the path should be something like "RefProject/RefProject.csproj"
             var dependencyCsProjPathRelativeParts = dependencyCsProjPathRelative.Split(new[] { "\\", "/" }, StringSplitOptions.RemoveEmptyEntries);
             var dependencyCsProjFolder = dependencyCsProjPathRelativeParts.Skip(Math.Max(0, dependencyCsProjPathRelativeParts.Length - 2));
-                    
+
             // resolve the relative path to the absolute path of the dependency project so we can copy it over 
             var dependencyCsProjPathAbsolute = Path.GetFullPath(Path.Combine(csProjFolder, dependencyCsProjPathRelative));
-                
+
             FlattenAndCopyDependencies(dependencyCsProjPathAbsolute, stagingFolder);
 
             // flatten the reference in the cs proj
@@ -71,12 +71,10 @@ public class GoogleCloudFunctionPackager : IDotnetFunctionPackager
             var csProjFile = Directory.EnumerateFiles(projectFolder, "*.csproj", SearchOption.AllDirectories).FirstOrDefault();
             if (csProjFile == null)
                 throw new Exception($"No .csproj file found for function '{functionInfo.Name}' in {projectFolder}");
-                
+
             FlattenAndCopyDependencies(csProjFile, stagingFolder);
-        
-            Directory.CreateDirectory(moduleProviderContext.FunctionsOutputFolder);
-        
-            var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(functionInfo.Name);
+
+            var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(functionInfo);
 
             if (File.Exists(outputZipFile))
                 File.Delete(outputZipFile);

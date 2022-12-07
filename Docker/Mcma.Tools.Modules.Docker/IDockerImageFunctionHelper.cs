@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Mcma.Tools.Modules;
 
-namespace Mcma.Management.Docker
+namespace Mcma.Management.Docker;
+
+public interface IDockerImageFunctionHelper
 {
-    public interface IDockerImageFunctionHelper
-    {
-        Task BuildAndPushFunctionImageAsync(ModuleProviderContext moduleProviderContext, FunctionInfo functionInfo);
-    }
+    Task BuildAndPushFunctionImageAsync(ModuleProviderContext moduleProviderContext, FunctionInfo functionInfo);
 }

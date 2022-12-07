@@ -15,7 +15,7 @@ public abstract class BaseCmd
     {
         if (WorkingDir != null)
         {
-            WorkingDir = Path.GetFullPath(WorkingDir, Directory.GetCurrentDirectory());
+            WorkingDir = Path.GetFullPath(PathHelper.ExpandPath(WorkingDir), Directory.GetCurrentDirectory());
             Directory.SetCurrentDirectory(WorkingDir);
         }
         else

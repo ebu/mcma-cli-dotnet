@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Tools.Git
-{
-    public interface IGitCli
-    {
-        Task InitAsync(string dir);
+namespace Mcma.Tools.Git;
 
-        Task AddAsync(string path);
-    }
+public interface IGitCli
+{
+    Task InitAsync(string dir);
+
+    Task AddAsync(string path);
 }

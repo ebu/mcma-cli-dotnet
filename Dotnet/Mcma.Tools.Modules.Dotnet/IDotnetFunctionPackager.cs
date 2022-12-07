@@ -1,9 +1,8 @@
 ﻿using Mcma.Tools.Modules.Packaging;
 
-namespace Mcma.Tools.Modules.Dotnet
+namespace Mcma.Tools.Modules.Dotnet;
+
+public interface IDotnetFunctionPackager : IFunctionPackager
 {
-    public interface IDotnetFunctionPackager : IFunctionPackager
-    {
-        
-    }
+    string Type { get; }
 }

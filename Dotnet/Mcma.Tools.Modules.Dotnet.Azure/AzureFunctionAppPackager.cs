@@ -4,46 +4,43 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using Mcma.Tools.Dotnet;
 
-namespace Mcma.Tools.Modules.Dotnet.Azure
-{
-    public class AzureFunctionAppPackager : IDotnetFunctionPackager
-    {
-        public AzureFunctionAppPackager(IDotnetCli dotnetCli)
-        {
-            DotnetCli = dotnetCli ?? throw new ArgumentNullException(nameof(dotnetCli));
-        }
-        
-        private IDotnetCli DotnetCli { get; }
-        
-        public string Type => "AzureFunctionApp";
+namespace Mcma.Tools.Modules.Dotnet.Azure;
 
-        public async Task PackageAsync(ModuleProviderContext moduleProviderContext, FunctionInfo functionInfo)
+public class AzureFunctionAppPackager : IDotnetFunctionPackager
+{
+    public AzureFunctionAppPackager(IDotnetCli dotnetCli)
+    {
+        DotnetCli = dotnetCli ?? throw new ArgumentNullException(nameof(dotnetCli));
+    }
+        
+    private IDotnetCli DotnetCli { get; }
+        
+    public string Type => "AzureFunctionApp";
+
+    public async Task PackageAsync(ModuleProviderContext moduleProviderContext, FunctionInfo functionInfo)
+    {
+        var projectFolder = moduleProviderContext.GetFunctionPath(functionInfo);
+        var publishOutput = Path.Combine(projectFolder, "staging");
+        try
         {
-            var projectFolder = moduleProviderContext.GetFunctionPath(functionInfo.Name);
-            var publishOutput = Path.Combine(projectFolder, "staging");
+            await DotnetCli.PublishAsync(projectFolder, outputFolder: publishOutput);
+        
+            var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(functionInfo);
+
+            if (File.Exists(outputZipFile))
+                File.Delete(outputZipFile);
+
+            ZipFile.CreateFromDirectory(publishOutput, outputZipFile);
+        }
+        finally
+        {
             try
             {
-                await DotnetCli.PublishAsync(projectFolder, outputFolder: publishOutput);
-        
-                Directory.CreateDirectory(moduleProviderContext.FunctionsOutputFolder);
-        
-                var outputZipFile = moduleProviderContext.GetFunctionOutputZipPath(functionInfo.Name);
-
-                if (File.Exists(outputZipFile))
-                    File.Delete(outputZipFile);
-
-                ZipFile.CreateFromDirectory(publishOutput, outputZipFile);
+                Directory.Delete(publishOutput, true);
             }
-            finally
+            catch
             {
-                try
-                {
-                    Directory.Delete(publishOutput, true);
-                }
-                catch
-                {
-                    // nothing to do at this point...
-                }
+                // nothing to do at this point...
             }
         }
     }

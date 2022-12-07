@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Management.Docker
+namespace Mcma.Management.Docker;
+
+public interface IDockerCli
 {
-    public interface IDockerCli
-    {
-        Task RunCmdAsync(string cmd, params string[] args);
-    }
+    Task RunCmdAsync(string cmd, params string[] args);
 }

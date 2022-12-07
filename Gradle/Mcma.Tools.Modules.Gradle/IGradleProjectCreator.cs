@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace Mcma.Tools.Modules.Dotnet;
+namespace Mcma.Tools.Modules.Gradle;
 
-public interface IDotnetProjectCreator
+public interface IGradleProjectCreator
 {
     Task CreateProjectAsync(NewModuleParameters moduleParameters,
                             string srcFolder,

@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mcma.Tools.Gradle
+namespace Mcma.Tools.Gradle;
+
+public interface IGradleCli
 {
-    public interface IGradleCli
-    {
-        Task InstallWrapperAsync(string gradleVersion = null, string distributionType = null);
-    }
+    Task InstallWrapperAsync(string gradleVersion = null, string distributionType = null);
 }

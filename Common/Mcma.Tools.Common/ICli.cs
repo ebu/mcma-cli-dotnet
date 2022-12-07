@@ -14,8 +14,8 @@ public abstract class CliBase
     protected ICliExecutor CliExecutor { get; }
         
     protected abstract string Executable { get; }
-        
-    public virtual Task<(string stdOut, string stdErr)> RunCmdAsync(string cmd, string[] args, bool showOutput)
+
+    private Task<(string stdOut, string stdErr)> RunCmdAsync(string cmd, string[] args, bool showOutput)
         => CliExecutor.ExecuteAsync(Executable, new[] { cmd }.Concat(args).ToArray(), showOutput);
         
     protected Task<(string stdOut, string stdErr)> RunCmdWithOutputAsync(string cmd, params string[] args)

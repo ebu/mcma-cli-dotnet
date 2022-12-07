@@ -16,15 +16,18 @@ public class ModulePackager : IModulePackager
     private static void CopyFile(ModuleProviderContext moduleProviderContext, JToken additionalFile)
     {
         string src, dest;
+        bool flatten;
         switch (additionalFile.Type)
         {
             case JTokenType.Object:
                 src = additionalFile[nameof(src)].Value<string>();
-                dest = additionalFile[nameof(dest)].Value<string>();
+                dest = additionalFile[nameof(dest)]?.Value<string>() ?? "";
+                flatten = additionalFile[nameof(flatten)]?.Value<bool>() ?? false;
                 break;
             case JTokenType.String:
                 src = additionalFile.Value<string>();
                 dest = string.Empty;
+                flatten = false;
                 break;
             default:
                 throw new Exception("Invalid value in 'additionalFiles'. Value must be an object or a string.");
@@ -44,7 +47,7 @@ public class ModulePackager : IModulePackager
         foreach (var match in matches.Files)
         {
             var srcPath = Path.Combine(moduleProviderContext.ProviderFolder, match.Path);
-            var destPath = Path.Combine(destRootDir, match.Path);
+            var destPath = Path.Combine(destRootDir, flatten ? Path.GetFileName(match.Path) : match.Path);
                 
             var destDir = Path.GetDirectoryName(destPath);
             Directory.CreateDirectory(destDir);
@@ -69,7 +72,12 @@ public class ModulePackager : IModulePackager
     {
         Console.WriteLine($"Packaging module at {moduleProviderContext.ProviderFolder}...");
         try
-        {   
+        {
+            if (Directory.Exists(moduleProviderContext.OutputStagingFunctionFolder))
+                Directory.Delete(moduleProviderContext.OutputStagingFunctionFolder, true);
+            
+            Directory.CreateDirectory(moduleProviderContext.OutputStagingFunctionFolder);
+            
             foreach (var function in moduleProviderContext.ModulePackage.Functions)
             {
                 Console.WriteLine($"Packaging function '{function.Name}' of type '{function.Type}'");
@@ -84,7 +92,7 @@ public class ModulePackager : IModulePackager
                 foreach (var file in files)
                     CopyFile(moduleProviderContext, file);
 
-            File.WriteAllText(
+            await File.WriteAllTextAsync(
                 Path.Combine(moduleProviderContext.OutputStagingFolder, "module.json"),
                 moduleProviderContext.GetProviderSpecificModule().ToJson());
                 

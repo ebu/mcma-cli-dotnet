@@ -20,6 +20,10 @@ internal static class ModuleRepositoryAuthRegistryExtensions
 
         authenticatorRegistry.Services.Configure(key.ToString(), configureOptions ?? (_ => { }));
 
+        authenticatorRegistry.Services
+                             .AddSingleton<IModuleRepositoryTokenStorage, UserProfileTokenStorage>()
+                             .AddSingleton<IModuleRepositoryTokensReceiver, ModuleRepositoryTokensReceiver>();
+
         return authenticatorRegistry.Add(key, GetFactory(key));
     }
 
