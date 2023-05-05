@@ -71,7 +71,7 @@ public class GradleModuleBuildSystem : IModuleBuildSystem
 
     public async Task InitializeAsync(NewModuleParameters parameters)
     {
-        await GradleCli.InstallWrapperAsync();
+        await GradleCli.InitAsync(parameters.NameInKebabCase);
 
         await ExtractResourcesAsync(parameters, "Tasks", "");
         await ExtractResourcesAsync(parameters, "Config", "");

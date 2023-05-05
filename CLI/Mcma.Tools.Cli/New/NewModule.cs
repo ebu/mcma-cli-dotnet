@@ -36,17 +36,17 @@ public class NewModule : BaseCmd
     [Option("-ns|--namespace <NAMESPACE>")]
     [Required]
     public string Namespace { get; set; }
+        
+    [Option("-p|--provider <PROVIDER>", CommandOptionType.MultipleValue)]
+    [AllowedValues("aws", "azure", "google", "kubernetes", IgnoreCase = true)]
+    [Required]
+    public Provider[] Providers { get; set; }
 
     [Option("-dn|--displayName <DISPLAYNAME>")]
     public string DisplayName { get; set; }
 
     [Option("-desc|--description <DESCRIPTION>")]
     public string Description { get; set; }
-        
-    [Option("-p|--provider <PROVIDER>", CommandOptionType.MultipleValue)]
-    [AllowedValues("aws", "azure", "google", "kubernetes", IgnoreCase = true)]
-    [Required]
-    public Provider[] Providers { get; set; }
         
     [Option("-pa|--providerArg <ARG>", CommandOptionType.MultipleValue)]
     public string[] ProviderArgs { get; set; }

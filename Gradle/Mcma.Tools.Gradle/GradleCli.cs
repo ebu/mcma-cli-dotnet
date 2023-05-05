@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+using System;
 using System.Threading.Tasks;
 
 namespace Mcma.Tools.Gradle;
@@ -11,21 +9,20 @@ internal class GradleCli : CliBase, IGradleCli
         : base(cliExecutor)
     {
     }
-        
-    protected override string Executable => $"gradlew{(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".bat" : "")}";
-        
-    public Task<(string stdOut, string stdErr)> ExecuteTaskAsync(string taskName, params string[] args)
-        => CliExecutor.ExecuteAsync(Executable, new[] { taskName }.Concat(args).ToArray(), true);
 
-    public Task InstallWrapperAsync(string gradleVersion = null, string distributionType = null)
+    protected override string Executable => "gradle.bat";
+
+    public async Task InitAsync(string projectName)
     {
-        var args = new List<string>();
-             
-        if (gradleVersion != null)
-            args.Add(gradleVersion);
-        if (distributionType != null)
-            args.Add(distributionType);
-            
-        return RunCmdWithOutputAsync("wrapper", args.ToArray());
+        try
+        {
+            await RunCmdWithOutputAsync("init", "--type=basic", "--dsl=groovy", $"--project-name={projectName}");
+        }
+        catch (CliExecutableNotFoundException)
+        {
+            Console.WriteLine("Gradle is not installed. Please follow the instructions to install it here:");
+            Console.WriteLine("https://gradle.org/install/");
+            Environment.Exit(1);
+        }
     }
 }

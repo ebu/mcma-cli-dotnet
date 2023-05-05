@@ -20,9 +20,7 @@ public class ModuleProviderContext
         Provider = provider ?? new Provider(new DirectoryInfo(providerFolder).Name);
 
         _modulePackage =
-            new Lazy<ModulePackage>(() => JsonFileHelper
-                                          .GetJsonObjectFromFile(Path.Combine(ProviderFolder, "module-package.json"))
-                                          .ToObject<ModulePackage>());
+            new Lazy<ModulePackage>(() => JsonFileHelper.GetJsonObjectFromFile(Path.Combine(ProviderFolder, "module-package.json")).ToObject<ModulePackage>());
         
         _variables = new Lazy<IReadOnlyDictionary<string, string>>(() =>
         {

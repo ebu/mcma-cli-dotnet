@@ -21,7 +21,7 @@ public class GradleFunctionPackager : IGradleFunctionPackager
         
         var functionDirRelative = Path.Combine(providerDirRelative, functionInfo.Path);
         
-        var buildKey = functionDirRelative.Replace("/", ":");
+        var buildKey = functionDirRelative.Replace(Path.DirectorySeparatorChar, ':');
 
         await GradleWrapperCli.ExecuteTaskAsync($"{buildKey}:build", "-p", moduleProviderContext.RootFolder);
 

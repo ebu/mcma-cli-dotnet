@@ -4,5 +4,5 @@ namespace Mcma.Tools.Gradle;
 
 public interface IGradleCli
 {
-    Task InstallWrapperAsync(string gradleVersion = null, string distributionType = null);
+    Task InitAsync(string projectName);
 }
