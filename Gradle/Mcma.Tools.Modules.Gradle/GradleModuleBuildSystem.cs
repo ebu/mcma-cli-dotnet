@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 using Mcma.Tools.Gradle;
 
 namespace Mcma.Tools.Modules.Gradle;
@@ -20,7 +15,7 @@ public class GradleModuleBuildSystem : IModuleBuildSystem
         GradleCli = gradleCli ?? throw new ArgumentNullException(nameof(gradleCli));
         GradleWrapperCli = gradleWrapperCli ?? throw new ArgumentNullException(nameof(gradleWrapperCli));
         FunctionPackager = functionPackager ?? throw new ArgumentNullException(nameof(functionPackager));
-        Templates = templates?.ToArray() ?? Array.Empty<IGradleNewProviderModuleTemplate>();
+        Templates = templates.ToArray();
     }
 
     private IGradleCli GradleCli { get; }
@@ -79,15 +74,15 @@ public class GradleModuleBuildSystem : IModuleBuildSystem
 
     public string[] GetGitIgnorePaths(ModuleType moduleType, ModuleContext moduleContext,
                                       NewModuleParameters parameters)
-        => new[]
-        {
+        =>
+        [
             ".gradle",
             ".terraform",
             "build",
             "node_modules",
             "gradle.properties",
             "aws-credentials.json"
-        };
+        ];
 
     public async Task CreateProviderProjectsAsync(ModuleType moduleType,
                                                   ModuleContext moduleContext,

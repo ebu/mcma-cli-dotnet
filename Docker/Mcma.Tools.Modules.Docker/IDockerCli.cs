@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Management.Docker;
+﻿namespace Mcma.Tools.Modules.Docker;
 
 public interface IDockerCli
 {

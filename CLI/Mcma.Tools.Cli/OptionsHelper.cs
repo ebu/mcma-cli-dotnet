@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Mcma.Tools.Cli;
+﻿namespace Mcma.Tools.Cli;
 
 public static class OptionsHelper
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Mcma.Tools.Projects;
+﻿namespace Mcma.Tools.Projects;
 
 internal class McmaProjectsTool : IMcmaProjectsTool
 {
@@ -14,11 +11,11 @@ internal class McmaProjectsTool : IMcmaProjectsTool
 
     public Task NewAsync(string name)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Task DeployAsync()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

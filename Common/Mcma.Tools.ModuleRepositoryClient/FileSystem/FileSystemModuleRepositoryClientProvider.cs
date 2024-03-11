@@ -4,10 +4,13 @@ using Mcma.Tools.ModuleRepositoryClient.Registry;
 
 namespace Mcma.Tools.ModuleRepositoryClient.FileSystem;
 
-internal class FileSystemModuleRepositoryClientProvider : IModuleRepositoryClientProvider
+internal partial class FileSystemModuleRepositoryClientProvider : IModuleRepositoryClientProvider
 {
-    public bool IsSupportedUrl(string url) => Regex.IsMatch(url, @"^((\/)|([A-Za-z]:)|(\\)).+");
+    [GeneratedRegex(@"^((\/)|([A-Za-z]:)|(\\)).+")]
+    private static partial Regex MyRegex();
+    
+    public bool IsSupportedUrl(string url) => MyRegex().IsMatch(url);
 
-    public IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator authenticator) =>
+    public IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator? authenticator) =>
         new FileSystemModuleRepositoryClient(entry.Url);
 }

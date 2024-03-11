@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using McMaster.Extensions.CommandLineUtils;
+﻿using McMaster.Extensions.CommandLineUtils;
 
 namespace Mcma.Tools.Cli;
 
@@ -9,17 +6,14 @@ namespace Mcma.Tools.Cli;
 public abstract class BaseCmd
 {
     [Option("-d|--dir <DIR>", Description = "The path to use as the working directory")]
-    public string WorkingDir { get; set; }
+    // ReSharper disable once MemberCanBeProtected.Global - needs to be public so it can be set by CommandLineUtils
+    public string WorkingDir { get; set; } = Directory.GetCurrentDirectory();
         
     public Task OnExecuteAsync(CommandLineApplication app)
     {
-        if (WorkingDir != null)
-        {
-            WorkingDir = Path.GetFullPath(PathHelper.ExpandPath(WorkingDir), Directory.GetCurrentDirectory());
-            Directory.SetCurrentDirectory(WorkingDir);
-        }
-        else
-            WorkingDir = Directory.GetCurrentDirectory();
+        WorkingDir = Path.GetFullPath(PathHelper.ExpandPath(WorkingDir), Directory.GetCurrentDirectory());
+        
+        Directory.SetCurrentDirectory(WorkingDir);
 
         if (!Directory.Exists(WorkingDir))
             throw new Exception($"Directory '{WorkingDir}' not found.");

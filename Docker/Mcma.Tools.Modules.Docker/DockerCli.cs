@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Mcma.Tools;
-
-namespace Mcma.Management.Docker;
+﻿namespace Mcma.Tools.Modules.Docker;
 
 internal class DockerCli : CliBase, IDockerCli
 {

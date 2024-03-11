@@ -1,4 +1,6 @@
-﻿internal class ModuleRepositoryAuthOptions
+﻿namespace Mcma.Tools.ModuleRepositoryClient.Auth;
+
+internal class ModuleRepositoryAuthOptions
 {
     public string LoginUrl { get; set; } = "https://modules.mcma.io/login";
     

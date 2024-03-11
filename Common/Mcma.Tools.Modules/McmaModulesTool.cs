@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Mcma.Tools.Git;
+﻿using Mcma.Tools.Git;
 using Mcma.Tools.ModuleRepositoryClient;
 using Mcma.Tools.Modules.Packaging;
 using Newtonsoft.Json;
@@ -16,14 +11,14 @@ internal class McmaModulesTool : IMcmaModulesTool
     public McmaModulesTool(IModulePackager packager,
                            IModuleRepositoryClientManager repositoryClientManager,
                            IGitCli git,
-                           IEnumerable<IModuleBuildSystem> buildSystems,
-                           IEnumerable<IModuleTerraformScriptProvider> terraformScriptProviders) 
+                           IEnumerable<IModuleBuildSystem>? buildSystems,
+                           IEnumerable<IModuleTerraformScriptProvider>? terraformScriptProviders) 
     {
         Packager = packager ?? throw new ArgumentNullException(nameof(packager));
-        BuildSystems = buildSystems?.ToArray() ?? Array.Empty<IModuleBuildSystem>();
         RepositoryClientManager = repositoryClientManager ?? throw new ArgumentNullException(nameof(repositoryClientManager));
         Git = git ?? throw new ArgumentNullException(nameof(git));
-        TerraformScriptProviders = terraformScriptProviders?.ToArray() ?? Array.Empty<IModuleTerraformScriptProvider>();
+        BuildSystems = buildSystems?.ToArray() ?? [];
+        TerraformScriptProviders = terraformScriptProviders?.ToArray() ?? [];
     }
 
     private IModulePackager Packager { get; }
@@ -56,22 +51,21 @@ internal class McmaModulesTool : IMcmaModulesTool
 
         await moduleBuildSystem.InitializeAsync(parameters);
 
-        var module = new Module
-        {
-            Namespace = parameters.NamespaceInPascalCase,
-            Name = parameters.NameInKebabCase,
-            Version = Version.Initial(),
-            DisplayName = parameters.DisplayName,
-            Description = parameters.Description
-        };
-
         foreach (var providerParams in parameters.Providers)
         {
             var tfScriptProvider = TerraformScriptProviders.FirstOrDefault(x => x.ModuleType == moduleType && x.Provider == providerParams.Provider);
             if (tfScriptProvider == null)
                 throw new Exception($"Provider '{providerParams.Provider}' is not supported.");
-                
-            module.Provider = providerParams.Provider;
+
+            var module = new Module
+            {
+                Namespace = parameters.NamespaceInPascalCase,
+                Name = parameters.NameInKebabCase,
+                Version = Version.Initial(),
+                DisplayName = parameters.DisplayName,
+                Description = parameters.Description,
+                Provider = providerParams.Provider
+            };
 
             var providerFolder = parameters.GetProviderDir(providerParams.Provider);
             Directory.CreateDirectory(providerFolder);
@@ -115,16 +109,16 @@ internal class McmaModulesTool : IMcmaModulesTool
         await Packager.PackageAsync(providerContext, GetBuildSystem(moduleContext));
     }
 
-    public async Task PackageAsync(string rootFolder, Version version = null)
+    public async Task PackageAsync(string rootFolder, Version? version = null)
     {
         var moduleContext = new ModuleContext(rootFolder);
-        if (version != null)
+        if (version is not null)
             moduleContext.Version = version;
 
         foreach (var providerContext in moduleContext.GetProviders())
             await Packager.PackageAsync(providerContext, GetBuildSystem(moduleContext));
 
-        if (version != null)
+        if (version is not null)
             moduleContext.Save();
     }
 
@@ -141,10 +135,10 @@ internal class McmaModulesTool : IMcmaModulesTool
         await client.PublishAsync(providerContext.GetProviderSpecificModule(), providerContext.OutputZipFile);
     }
 
-    public async Task PublishAsync(string rootFolder, string repositoryName, Version version = null)
+    public async Task PublishAsync(string rootFolder, string repositoryName, Version? version = null)
     {
         var moduleContext = new ModuleContext(rootFolder);
-        if (version != null)
+        if (version is not null)
             moduleContext.Version = version;
 
         foreach (var providerContext in moduleContext.GetProviders())
@@ -156,7 +150,7 @@ internal class McmaModulesTool : IMcmaModulesTool
             await client.PublishAsync(providerContext.GetProviderSpecificModule(), providerContext.OutputZipFile);
         }
 
-        if (version != null)
+        if (version is not null)
             moduleContext.Save();
     }
 

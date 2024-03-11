@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools;
 
@@ -21,4 +19,7 @@ public static class JsonFileHelper
             throw new Exception($"Failed to parse json from {path}", ex);
         }
     }
+
+    public static T GetJsonObjectFromFile<T>(string path) where T : notnull
+        => GetJsonObjectFromFile(path).ToObject<T>() ?? throw new Exception($"Deserialization of json from {path} to type {typeof(T).Name} resulted in a null value");
 }

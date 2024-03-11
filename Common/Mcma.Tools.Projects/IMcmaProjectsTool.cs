@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Projects;
+﻿namespace Mcma.Tools.Projects;
 
 public interface IMcmaProjectsTool
 {

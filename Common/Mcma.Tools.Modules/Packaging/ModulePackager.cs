@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO.Compression;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using Newtonsoft.Json.Linq;
@@ -11,24 +7,48 @@ namespace Mcma.Tools.Modules.Packaging;
 
 public class ModulePackager : IModulePackager
 {
-    private static readonly string[] TextFileExts = { ".tf", ".json", ".yaml", ".txt", ".xml", ".config", ".html", ".md", ".ini" };
+    private static readonly string[] TextFileExts = [".tf", ".json", ".yaml", ".txt", ".xml", ".config", ".html", ".md", ".ini"];
 
     private static void CopyFile(ModuleProviderContext moduleProviderContext, JToken additionalFile)
     {
-        string src, dest;
+        string src;
+        string dest;
         bool flatten;
+        
         switch (additionalFile.Type)
         {
             case JTokenType.Object:
-                src = additionalFile[nameof(src)].Value<string>();
-                dest = additionalFile[nameof(dest)]?.Value<string>() ?? "";
+                src =
+                    additionalFile[nameof(src)]?.Value<string>()
+                      ?? throw new Exception("Invalid entry in 'files' property of module json. Object must specify a value for 'src'");
+                dest = additionalFile[nameof(dest)]?.Value<string>() ?? string.Empty;
                 flatten = additionalFile[nameof(flatten)]?.Value<bool>() ?? false;
                 break;
+            
             case JTokenType.String:
-                src = additionalFile.Value<string>();
+                src =
+                    additionalFile.Value<string>()
+                      ?? throw new Exception("Invalid entry in 'files' property of module json. String value returned null");
                 dest = string.Empty;
                 flatten = false;
                 break;
+            
+            case JTokenType.None:
+            case JTokenType.Array:
+            case JTokenType.Constructor:
+            case JTokenType.Property:
+            case JTokenType.Comment:
+            case JTokenType.Integer:
+            case JTokenType.Float:
+            case JTokenType.Boolean:
+            case JTokenType.Null:
+            case JTokenType.Undefined:
+            case JTokenType.Date:
+            case JTokenType.Raw:
+            case JTokenType.Bytes:
+            case JTokenType.Guid:
+            case JTokenType.Uri:
+            case JTokenType.TimeSpan:
             default:
                 throw new Exception("Invalid value in 'additionalFiles'. Value must be an object or a string.");
         }
@@ -49,7 +69,7 @@ public class ModulePackager : IModulePackager
             var srcPath = Path.Combine(moduleProviderContext.ProviderFolder, match.Path);
             var destPath = Path.Combine(destRootDir, flatten ? Path.GetFileName(match.Path) : match.Path);
                 
-            var destDir = Path.GetDirectoryName(destPath);
+            var destDir = Path.GetDirectoryName(destPath) ?? throw new Exception($"Directory name for {destPath} returned null");
             Directory.CreateDirectory(destDir);
             
             if (TextFileExts.Any(x => x.Equals(Path.GetExtension(srcPath), StringComparison.OrdinalIgnoreCase)))
@@ -88,7 +108,7 @@ public class ModulePackager : IModulePackager
             }
                 
             var files = moduleProviderContext.ModulePackage.Files;
-            if (files != null)
+            if (files is not null)
                 foreach (var file in files)
                     CopyFile(moduleProviderContext, file);
 

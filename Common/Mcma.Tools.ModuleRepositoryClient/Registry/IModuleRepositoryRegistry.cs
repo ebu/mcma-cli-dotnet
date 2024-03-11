@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mcma.Tools.ModuleRepositoryClient.Registry;
+﻿namespace Mcma.Tools.ModuleRepositoryClient.Registry;
 
 public interface IModuleRepositoryRegistry
 {

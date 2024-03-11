@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Common\Mcma.Tools.Common\Mcma.Tools.Common.csproj" />
+        <ProjectReference Include="..\..\Common\Mcma.Tools.Common\Mcma.Tools.Common.csproj" />
     </ItemGroup>
 
 </Project>

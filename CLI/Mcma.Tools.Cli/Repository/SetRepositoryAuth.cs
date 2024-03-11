@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Mcma.Tools.ModuleRepositoryClient;
 using McMaster.Extensions.CommandLineUtils;
 
@@ -18,13 +16,14 @@ public class SetRepositoryAuth : BaseCmd
         
     [Argument(0)]
     [Required]
-    public string RepositoryName { get; set; }
+    public required string RepositoryName { get; set; }
         
-    [Option("-t|--authType <AUTHTYPE>")]
-    public string AuthType { get; set; }
+    [Argument(1)]
+    [Required]
+    public required string AuthType { get; set; }
         
     [Option("-c|--authContext <AUTHCONTEXT>")]
-    public string AuthContext { get; set; }
+    public string? AuthContext { get; set; }
         
     protected override Task ExecuteAsync(CommandLineApplication app)
     {

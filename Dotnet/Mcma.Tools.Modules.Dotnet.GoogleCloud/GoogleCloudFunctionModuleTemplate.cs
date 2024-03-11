@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
+﻿namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
 
 public abstract class GoogleCloudFunctionModuleTemplate : IDotnetNewProviderModuleTemplate
 {

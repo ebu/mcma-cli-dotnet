@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Dotnet;
+﻿namespace Mcma.Tools.Modules.Dotnet;
 
 public interface IDotnetProjectCreator
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mcma.Tools.Modules;
+﻿using Mcma.Tools.Modules;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace Mcma.Tools.Cli.Module;
@@ -16,7 +14,7 @@ public class SetModuleMcmaVersion : BaseCmd
     private IMcmaModulesTool ModulesTool { get; }
 
     [Argument(0)]
-    public Version Version { get; set; }
+    public required Version Version { get; set; }
 
     protected override Task ExecuteAsync(CommandLineApplication app)
         => ModulesTool.SetMcmaVersionAsync(WorkingDir, Version);

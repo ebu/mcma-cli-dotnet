@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Mcma.Tools.Dotnet;
+﻿namespace Mcma.Tools.Dotnet;
 
 internal class DotnetCli : CliBase, IDotnetCli
 {
@@ -19,10 +15,10 @@ internal class DotnetCli : CliBase, IDotnetCli
     public Task RestoreAsync(string target)
         => RunCmdWithOutputAsync("restore", target);
 
-    public Task PublishAsync(string projectPath, string config = "Release", string arch = "linux-x64", string outputFolder = null)
+    public Task PublishAsync(string projectPath, string config = "Release", string arch = "linux-x64", string? outputFolder = null)
         => RunCmdWithOutputAsync("publish",
                                  new[] { projectPath, "-c", config, "-r", arch }
-                                     .Concat(outputFolder != null ? new[] { "-o", outputFolder } : Array.Empty<string>())
+                                     .Concat(outputFolder is not null ? new[] { "-o", outputFolder } : [])
                                      .ToArray());
 
     public Task NewAsync(string templateName, string folder, params (string name, string value)[] options)

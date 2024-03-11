@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Mcma.Tools.Modules.Packaging;
-
-namespace Mcma.Tools.Modules;
+﻿namespace Mcma.Tools.Modules;
 
 public interface IModuleBuildSystem
 {

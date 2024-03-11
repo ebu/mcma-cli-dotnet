@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace Mcma.Tools.Gradle;
 
 public interface IGradleWrapperCli

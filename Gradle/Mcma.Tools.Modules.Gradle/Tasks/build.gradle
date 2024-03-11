@@ -152,8 +152,8 @@ afterEvaluate {
     def prevTask = null
     project.subprojects.each {
         def task = it.tasks.find { task -> task.name.contains('npmUpdate') }
-        if (task != null) {
-            if (prevTask != null) {
+        if (task is not null) {
+            if (prevTask is not null) {
                 task.mustRunAfter(prevTask)
             }
             prevTask = task
@@ -163,8 +163,8 @@ afterEvaluate {
     prevTask = null
     project.subprojects.each {
         def task = it.tasks.find { task -> task.name.contains('npmInstall') }
-        if (task != null) {
-            if (prevTask != null) {
+        if (task is not null) {
+            if (prevTask is not null) {
                 task.mustRunAfter(prevTask)
             }
             prevTask = task

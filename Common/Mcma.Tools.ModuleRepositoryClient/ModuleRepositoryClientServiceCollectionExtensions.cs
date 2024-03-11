@@ -1,5 +1,5 @@
-﻿using System;
-using Mcma.Client;
+﻿using Mcma.Client;
+using Mcma.Tools.ModuleRepositoryClient.Auth;
 using Mcma.Tools.ModuleRepositoryClient.FileSystem;
 using Mcma.Tools.ModuleRepositoryClient.Http;
 using Mcma.Tools.ModuleRepositoryClient.Registry;
@@ -10,12 +10,12 @@ namespace Mcma.Tools.ModuleRepositoryClient;
 public static class ModuleRepositoryClientServiceCollectionExtensions
 {
     public static IServiceCollection AddModuleRepositoryClient(this IServiceCollection services,
-                                                               Action<ModuleRepositoryRegistryOptions> configure = null)
+                                                               Action<ModuleRepositoryRegistryOptions>? configure = null)
     {
-        if (configure != null)
+        if (configure is not null)
             services.Configure(configure);
 
-        return services.AddMcmaClient(x => x.Auth.AddModuleRepositoryAuth())
+        return services.AddSingletonMcmaClient(x => x.AddAuth(auth => auth.AddModuleRepositoryAuth()))
                        .AddSingleton<IModuleRepositoryRegistry, ModuleRepositoryRegistry>()
                        .AddSingleton<IModuleRepositoryClientProvider, FileSystemModuleRepositoryClientProvider>()
                        .AddSingleton<IModuleRepositoryClientProvider, HttpModuleRepositoryClientProvider>()

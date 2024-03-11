@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools;
+﻿namespace Mcma.Tools;
 
 public interface ICliExecutor
 {

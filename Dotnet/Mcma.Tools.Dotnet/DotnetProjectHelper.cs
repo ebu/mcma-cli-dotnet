@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Mcma.Tools.Dotnet;
 
@@ -9,7 +7,7 @@ public static class DotnetProjectHelper
     public static void RunForEachProject(Action<(string projectFolder, string csprojFile)> run)
     {
         foreach (var csprojFile in Directory.GetFiles(".", "*.csproj", SearchOption.AllDirectories))
-            run((Path.GetDirectoryName(csprojFile), Path.GetFileNameWithoutExtension(csprojFile)));
+            run((Path.GetDirectoryName(csprojFile)!, Path.GetFileNameWithoutExtension(csprojFile)));
     }
         
     public static void SetMcmaVersion(string version)

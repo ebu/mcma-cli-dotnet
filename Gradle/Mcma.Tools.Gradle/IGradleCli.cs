@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Gradle;
+﻿namespace Mcma.Tools.Gradle;
 
 public interface IGradleCli
 {

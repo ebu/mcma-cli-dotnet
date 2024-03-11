@@ -6,6 +6,4 @@ namespace Mcma.Tools.Cli.Module;
 [Subcommand(typeof(PackageModule),
             typeof(PublishModule),
             typeof(SetModuleMcmaVersion))]
-public class Module : BaseCmd
-{
-}
+public class Module : BaseCmd;

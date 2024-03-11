@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace Mcma.Tools.Modules.Gradle;
 
 public interface IGradleProjectCreator

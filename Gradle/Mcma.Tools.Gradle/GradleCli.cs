@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace Mcma.Tools.Gradle;
 
 internal class GradleCli : CliBase, IGradleCli

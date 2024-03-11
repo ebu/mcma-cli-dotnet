@@ -7,5 +7,5 @@ internal interface IModuleRepositoryClientProvider
 {
     bool IsSupportedUrl(string url);
 
-    IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator authenticator);
+    IModuleRepositoryClient GetClient(ModuleRepositoryRegistryEntry entry, IAuthenticator? authenticator);
 }

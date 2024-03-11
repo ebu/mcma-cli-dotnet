@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>Mcma.Management.Docker</RootNamespace>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
+        <ProjectReference Include="..\..\Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
     </ItemGroup>
 
 </Project>

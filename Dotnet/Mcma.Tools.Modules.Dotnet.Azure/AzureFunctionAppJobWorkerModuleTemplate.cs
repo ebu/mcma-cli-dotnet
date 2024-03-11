@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Dotnet.Azure;
+﻿namespace Mcma.Tools.Modules.Dotnet.Azure;
 
 public class AzureFunctionAppJobWorkerModuleTemplate : AzureFunctionAppModuleTemplate
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mcma.Tools.Modules;
+﻿using Mcma.Tools.Modules;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace Mcma.Tools.Cli.Module;
@@ -14,18 +12,18 @@ public class PackageModule : BaseCmd
     }
         
     private IMcmaModulesTool ModulesTool { get; }
-        
+
     [Option("-p|--provider <PROVIDER>", CommandOptionType.MultipleValue, Description = "The providers for which to package the module")]
-    public Provider[] Providers { get; set; }
+    public Provider[]? Providers { get; set; }
         
     [Option("-v|--version <VERSION>", Description = "The version of the module to package")]
-    public Version Version { get; set; }
+    public Version? Version { get; set; }
 
     protected override async Task ExecuteAsync(CommandLineApplication app)
     {
-        if (Providers != null)
+        if (Providers is not null)
         {
-            if (Version != null)
+            if (Version is not null)
             {
                 await app.Error.WriteLineAsync(
                     "Version cannot be specified when publishing to specific providers. Version should be kept the consistent across all providers.");

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mcma.Tools.Modules;
-
-namespace Mcma.Management.Docker;
+﻿namespace Mcma.Tools.Modules.Docker;
 
 public class DockerImageFunctionHelper : IDockerImageFunctionHelper
 {
@@ -23,8 +19,8 @@ public class DockerImageFunctionHelper : IDockerImageFunctionHelper
         var dockerImageId = functionInfo.Properties["dockerImageId"];
         var projectFolder = moduleProviderContext.GetFunctionPath(functionInfo);
 
-        var dockerUserName = Environment.GetEnvironmentVariable("DOCKER_USERNAME");
-        var dockerPassword = Environment.GetEnvironmentVariable("DOCKER_PASSWORD");
+        var dockerUserName = Environment.GetEnvironmentVariable("DOCKER_USERNAME") ?? throw new Exception("DOCKER_USERNAME env var not set");
+        var dockerPassword = Environment.GetEnvironmentVariable("DOCKER_PASSWORD") ?? throw new Exception("DOCKER_PASSWORD env var not set");
 
         await DockerCli.RunCmdAsync("login", "-u", dockerUserName, "-p", dockerPassword);
         await DockerCli.RunCmdAsync("build", projectFolder, "-t", $"{dockerImageId}:{moduleProviderContext.Version}");

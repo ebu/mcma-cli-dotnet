@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
+﻿using Mcma.Tools.Dotnet;
 
 namespace Mcma.Tools.Modules.Dotnet;
 
@@ -16,8 +11,8 @@ public class DotnetModuleBuildSystem : IModuleBuildSystem
                                    IEnumerable<IDotnetNewProviderModuleTemplate> templates)
     {
         DotnetCli = dotnetCli ?? throw new ArgumentNullException(nameof(dotnetCli));
-        FunctionPackagers = functionPackagers?.ToArray() ?? Array.Empty<IDotnetFunctionPackager>();
-        Templates = templates?.ToArray() ?? Array.Empty<IDotnetNewProviderModuleTemplate>();
+        FunctionPackagers = functionPackagers.ToArray();
+        Templates = templates.ToArray();
     }
 
     private IDotnetCli DotnetCli { get; }
@@ -40,8 +35,8 @@ public class DotnetModuleBuildSystem : IModuleBuildSystem
     }
 
     public string[] GetGitIgnorePaths(ModuleType moduleType, ModuleContext moduleContext, NewModuleParameters parameters)
-        => new[]
-        {
+        =>
+        [
             "bin",
             "obj",
             "dist",
@@ -49,7 +44,7 @@ public class DotnetModuleBuildSystem : IModuleBuildSystem
             ".publish",
             "local.settings.json",
             "dotnet-tools.json"
-        };
+        ];
 
     public async Task CreateProviderProjectsAsync(ModuleType moduleType,
                                                   ModuleContext moduleContext,

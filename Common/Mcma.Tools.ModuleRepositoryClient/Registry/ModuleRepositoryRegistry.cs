@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Mcma.Serialization;
+﻿using Mcma.Serialization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,7 +9,7 @@ internal class ModuleRepositoryRegistry : IModuleRepositoryRegistry
 {
     public ModuleRepositoryRegistry(IOptions<ModuleRepositoryRegistryOptions> options)
     {
-        Options = options.Value ?? new ModuleRepositoryRegistryOptions();
+        Options = options.Value;
         Entries = new Lazy<Dictionary<string, ModuleRepositoryRegistryEntry>>(Load);
     }
 
@@ -41,7 +37,7 @@ internal class ModuleRepositoryRegistry : IModuleRepositoryRegistry
     {
         if (!File.Exists(RepositoriesJsonFile))
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(RepositoriesJsonFile));
+            Directory.CreateDirectory(Path.GetDirectoryName(RepositoriesJsonFile)!);
             File.WriteAllText(RepositoriesJsonFile, DefaultJson.ToString(Formatting.Indented));
         }
 
@@ -75,10 +71,9 @@ internal class ModuleRepositoryRegistry : IModuleRepositoryRegistry
 
     public bool TryAdd(ModuleRepositoryRegistryEntry entry)
     {
-        if (Entries.Value.ContainsKey(entry.Name))
+        if (!Entries.Value.TryAdd(entry.Name, entry))
             return false;
-            
-        Entries.Value[entry.Name] = entry;
+
         Save();
         return true;
     }

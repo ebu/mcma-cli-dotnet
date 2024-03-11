@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-
-namespace Mcma.Tools.Modules.Dotnet.Aws;
+﻿namespace Mcma.Tools.Modules.Dotnet.Aws;
 
 public abstract class AwsLambdaFunctionDotnetModuleTemplate : IDotnetNewProviderModuleTemplate
 {

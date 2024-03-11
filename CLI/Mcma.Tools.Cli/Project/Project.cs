@@ -4,6 +4,4 @@ namespace Mcma.Tools.Cli.Project;
 
 [Command("project")]
 [Subcommand(typeof(AddModule))]
-public class Project : BaseCmd
-{
-}
+public class Project : BaseCmd;

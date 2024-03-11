@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 using Mcma.Client.Auth;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+
+namespace Mcma.Tools.ModuleRepositoryClient.Auth;
 
 internal class ModuleRepositoryAuthenticator : IAuthenticator
 {
     public const string AuthType = "ModuleRepository";
     
     public ModuleRepositoryAuthenticator(AuthenticatorKey key,
-                                         IModuleRepositoryTokenStorage tokenStorage,
-                                         IModuleRepositoryTokensReceiver tokensReceiver,
-                                         HttpClient httpClient,
-                                         IOptionsSnapshot<ModuleRepositoryAuthOptions> optionsSnapshot)
+        IModuleRepositoryTokenStorage tokenStorage,
+        IModuleRepositoryTokensReceiver tokensReceiver,
+        HttpClient httpClient,
+        IOptionsSnapshot<ModuleRepositoryAuthOptions> optionsSnapshot)
     {
         TokenStorage = tokenStorage ?? throw new ArgumentNullException(nameof(tokenStorage));
         TokensReceiver = tokensReceiver ?? throw new ArgumentNullException(nameof(tokensReceiver));
         HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        Options = optionsSnapshot?.Get(key.ToString()) ?? new ModuleRepositoryAuthOptions();
+        Options = optionsSnapshot.Get(key.ToString());
     }
 
     private IModuleRepositoryTokenStorage TokenStorage { get; }
@@ -36,22 +33,22 @@ internal class ModuleRepositoryAuthenticator : IAuthenticator
 
     private JwtSecurityTokenHandler TokenHandler { get; } = new();
 
-    private bool IsValidToken(string token)
+    private bool IsValidToken(string? token)
         => !string.IsNullOrWhiteSpace(token) &&
-           TokenHandler.ReadJwtToken(token) is { } parsedToken &&
+           TokenHandler.ReadJwtToken(token) is JwtSecurityToken parsedToken &&
            parsedToken.ValidTo.ToUniversalTime() > DateTime.UtcNow;
 
-    private async Task<ModuleRepositoryAuthTokens> GetTokensFromRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    private async Task<ModuleRepositoryAuthTokens?> GetTokensFromRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var resp =
             await HttpClient.PostAsync(Options.TokenUrl,
-                                       new FormUrlEncodedContent(new Dictionary<string, string>
-                                       {
-                                           ["grant_type"] = "refresh_token",
-                                           ["client_id"] = Options.ClientId,
-                                           ["refresh_token"] = refreshToken
-                                       }),
-                                       cancellationToken);
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["grant_type"] = "refresh_token",
+                    ["client_id"] = Options.ClientId,
+                    ["refresh_token"] = refreshToken
+                }),
+                cancellationToken);
 
         if (!resp.IsSuccessStatusCode)
             return null;
@@ -60,12 +57,11 @@ internal class ModuleRepositoryAuthenticator : IAuthenticator
         {
             var tokensJson = JObject.Parse(await resp.Content.ReadAsStringAsync(cancellationToken));
 
-            return new ModuleRepositoryAuthTokens
-            {
-                AccessToken = tokensJson["access_token"]?.Value<string>(),
-                IdToken = tokensJson["id_token"]?.Value<string>(),
-                RefreshToken = refreshToken
-            };
+            if (tokensJson["access_token"]?.Value<string>() is not string accessToken ||
+                tokensJson["id_token"]?.Value<string>() is not string idToken)
+                return null;
+
+            return new ModuleRepositoryAuthTokens(accessToken, idToken, refreshToken);
         }
         catch
         {
@@ -84,14 +80,14 @@ internal class ModuleRepositoryAuthenticator : IAuthenticator
 
     private async Task<ModuleRepositoryAuthTokens> GetTokensAsync(ModuleRepositoryAuthTokens tokens, CancellationToken cancellationToken)
     {
-        var refreshToken = tokens?.RefreshToken;
+        var refreshToken = tokens.RefreshToken;
 
         if (!IsValidToken(refreshToken))
             return await GetTokensFromUserLoginAsync(cancellationToken);
         
         var tokensFromRefresh = await GetTokensFromRefreshTokenAsync(refreshToken, cancellationToken);
-        if (tokensFromRefresh != null)
-            return tokensFromRefresh;
+        if (tokensFromRefresh.HasValue)
+            return tokensFromRefresh.Value;
         
         return await GetTokensFromUserLoginAsync(cancellationToken);
     }
@@ -100,13 +96,13 @@ internal class ModuleRepositoryAuthenticator : IAuthenticator
     {
         var tokens = TokenStorage.Get();
 
-        if (!IsValidToken(tokens?.IdToken))
+        if (tokens.HasValue && !IsValidToken(tokens.Value.IdToken))
         {
-            tokens = await GetTokensAsync(tokens, cancellationToken);
+            tokens = await GetTokensAsync(tokens.Value, cancellationToken);
             
             TokenStorage.Set(tokens);
         }
 
-        request.Headers.Authorization = AuthenticationHeaderValue.Parse($"Bearer {tokens!.IdToken}");
+        request.Headers.Authorization = AuthenticationHeaderValue.Parse($"Bearer {tokens!.Value.IdToken}");
     }
 }

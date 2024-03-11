@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mcma.Management.Docker;
-using Mcma.Tools.Dotnet;
+﻿using Mcma.Tools.Dotnet;
+using Mcma.Tools.Modules.Docker;
 
 namespace Mcma.Tools.Modules.Dotnet;
 

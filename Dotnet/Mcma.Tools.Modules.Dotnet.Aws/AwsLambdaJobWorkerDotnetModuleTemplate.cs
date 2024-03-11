@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Dotnet.Aws;
+﻿namespace Mcma.Tools.Modules.Dotnet.Aws;
 
 public class AwsLambdaJobWorkerDotnetModuleTemplate : AwsLambdaApiDotnetModuleTemplate
 {

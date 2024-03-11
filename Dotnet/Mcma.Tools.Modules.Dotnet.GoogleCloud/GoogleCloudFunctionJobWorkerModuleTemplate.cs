@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
+﻿namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
 
 public class GoogleCloudFunctionJobWorkerModuleTemplate : GoogleCloudFunctionModuleTemplate
 {

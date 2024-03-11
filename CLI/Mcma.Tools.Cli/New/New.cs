@@ -4,6 +4,4 @@ namespace Mcma.Tools.Cli.New;
 
 [Command(Name = "new")]
 [Subcommand(typeof(NewModule))]
-public class New : BaseCmd
-{
-}
+public class New : BaseCmd;

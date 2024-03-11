@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Mcma.Tools.ModuleRepositoryClient;
 using McMaster.Extensions.CommandLineUtils;
 
@@ -19,20 +16,20 @@ public class AddRepository : BaseCmd
         
     [Argument(0)]
     [Required]
-    public string RepositoryName { get; set; }
+    public required string RepositoryName { get; set; }
         
     [Argument(1)]
     [Required]
-    public string Url { get; set; }
+    public required string Url { get; set; }
         
     [Option("-t|--authType <AUTHTYPE>")]
-    public string AuthType { get; set; }
+    public string? AuthType { get; set; }
         
     [Option("-c|--authContext <AUTHCONTEXT>")]
-    public string AuthContext { get; set; }
+    public string? AuthContext { get; set; }
 
     [Option("-p|--property <PROPERTY>", CommandOptionType.MultipleValue)]
-    public string[] Properties { get; set; }
+    public string[]? Properties { get; set; }
 
     protected override Task ExecuteAsync(CommandLineApplication app)
     {
@@ -40,7 +37,7 @@ public class AddRepository : BaseCmd
                                                     Url,
                                                     AuthType,
                                                     AuthContext,
-                                                    Properties.ToNameValuePairs().ToDictionary(x => x.Name, x => x.Value));
+                                                    Properties?.ToNameValuePairs().ToDictionary(x => x.Name, x => x.Value));
         return Task.CompletedTask;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Mcma.Management.Docker;
+namespace Mcma.Tools.Modules.Docker;
 
 public static class DockerModulesServiceCollectionExtensions
 {

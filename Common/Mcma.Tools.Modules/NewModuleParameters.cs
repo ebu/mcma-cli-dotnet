@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-namespace Mcma.Tools.Modules;
+﻿namespace Mcma.Tools.Modules;
 
 public class NewModuleParameters
 {
-    public NewModuleParameters(string parentDirectory,
+    public NewModuleParameters(string? parentDirectory,
                                string @namespace,
                                string name,
-                               IEnumerable<NewProviderModuleParameters> providers,
-                               string jobType = null,
-                               string displayName = null,
-                               string description = null)
+                               IEnumerable<NewProviderModuleParameters>? providers,
+                               string? jobType = null,
+                               string? displayName = null,
+                               string? description = null)
     {
         ParentDirectory = parentDirectory ?? Directory.GetCurrentDirectory();
         (NamespaceInPascalCase, NamespaceInKebabCase) =
-            @namespace != null ? NormalizeCasing(@namespace) : throw new ArgumentNullException(nameof(@namespace));
-        (NameInPascalCase, NameInKebabCase) = name != null ? NormalizeCasing(name) : throw new ArgumentNullException(nameof(name));
-        Providers = providers?.ToArray() ?? Array.Empty<NewProviderModuleParameters>();
+            @namespace is not null ? NormalizeCasing(@namespace) : throw new ArgumentNullException(nameof(@namespace));
+        (NameInPascalCase, NameInKebabCase) = name is not null ? NormalizeCasing(name) : throw new ArgumentNullException(nameof(name));
+        Providers = providers?.ToArray() ?? [];
             
         JobType = jobType;
         DisplayName = displayName ?? NameInPascalCase;
@@ -40,11 +35,11 @@ public class NewModuleParameters
         
     public NewProviderModuleParameters[] Providers { get; }
         
-    public string JobType { get; }
+    public string? JobType { get; }
 
-    public string DisplayName { get; }
+    public string? DisplayName { get; }
         
-    public string Description { get; }
+    public string? Description { get; }
         
     public string ModuleDirectory { get; }
         

@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Mcma.Tools.Modules;
-
-namespace Mcma.Management.Docker;
+﻿namespace Mcma.Tools.Modules.Docker;
 
 public interface IDockerImageFunctionHelper
 {

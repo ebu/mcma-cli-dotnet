@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Mcma.Tools.Projects;
+﻿using Mcma.Tools.Projects;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace Mcma.Tools.Cli.Project;
@@ -17,6 +15,10 @@ public class AddModule : BaseCmd
         
     protected override Task ExecuteAsync(CommandLineApplication app)
     {
+        // TODO: Add module to project using ProjectsTool
+
+        ProjectsTool.Modules.AddModuleAsync("", "", "", new Version(1, 0, 0));
+        
         return Task.CompletedTask;
     }
 }

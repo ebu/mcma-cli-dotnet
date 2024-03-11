@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using Mcma.Serialization;
 using Newtonsoft.Json.Linq;
 
@@ -13,21 +9,21 @@ public class ModuleProviderContext
     private readonly Lazy<ModulePackage> _modulePackage;
     private readonly Lazy<IReadOnlyDictionary<string, string>> _variables;
 
-    public ModuleProviderContext(ModuleContext moduleContext, string providerFolder, Provider provider = null)
+    public ModuleProviderContext(ModuleContext moduleContext, string? providerFolder, Provider? provider = null)
     {
         ModuleContext = moduleContext ?? throw new ArgumentNullException(nameof(moduleContext));
         ProviderFolder = providerFolder ?? throw new ArgumentNullException(nameof(providerFolder));
         Provider = provider ?? new Provider(new DirectoryInfo(providerFolder).Name);
 
         _modulePackage =
-            new Lazy<ModulePackage>(() => JsonFileHelper.GetJsonObjectFromFile(Path.Combine(ProviderFolder, "module-package.json")).ToObject<ModulePackage>());
+            new Lazy<ModulePackage>(() => JsonFileHelper.GetJsonObjectFromFile(Path.Combine(ProviderFolder, "module-package.json")).ToObject<ModulePackage>()!);
         
         _variables = new Lazy<IReadOnlyDictionary<string, string>>(() =>
         {
             var variables =
                 ModuleContext.Variables.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
             
-            foreach (var packageProp in ModulePackage.Properties ?? new Dictionary<string, string>())
+            foreach (var packageProp in ModulePackage.Properties ?? [])
                 variables[packageProp.Key] = packageProp.Value;
 
             return new ReadOnlyDictionary<string, string>(variables);
@@ -63,8 +59,7 @@ public class ModuleProviderContext
     public Module GetProviderSpecificModule()
     {
         var module = JObject.FromObject(ModuleContext.Module).ToMcmaObject<Module>();
-        if (module != null)
-            module.Provider = Provider;
+        module!.Provider = Provider;
         return module;
     }
 

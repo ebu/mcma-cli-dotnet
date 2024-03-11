@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
+﻿using Mcma.Tools.Dotnet;
 
 namespace Mcma.Tools.Modules.Dotnet;
 
@@ -26,7 +23,12 @@ public class DotnetProjectCreator : IDotnetProjectCreator
         };
 
         if (addJobTypeArg)
+        {
+            if (string.IsNullOrWhiteSpace(moduleParameters.JobType))
+                throw new Exception("Must specify 'jobType' parameter");
+
             options.Add(("jobType", moduleParameters.JobType));
+        }
 
         await DotnetCli.NewAsync(template, srcFolder, options.ToArray());
     }

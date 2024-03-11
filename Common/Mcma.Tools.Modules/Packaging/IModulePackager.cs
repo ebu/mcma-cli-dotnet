@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Packaging;
+﻿namespace Mcma.Tools.Modules.Packaging;
 
 public interface IModulePackager
 {

@@ -1,8 +1,3 @@
-﻿public class ModuleRepositoryAuthTokens
-{
-    public string AccessToken { get; set; }
-        
-    public string IdToken { get; set; }
+﻿namespace Mcma.Tools.ModuleRepositoryClient.Auth;
 
-    public string RefreshToken { get; set; }
-}
+public readonly record struct ModuleRepositoryAuthTokens(string AccessToken, string IdToken, string RefreshToken);

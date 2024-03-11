@@ -1,6 +1,8 @@
-﻿internal interface IModuleRepositoryTokenStorage
-{
-    ModuleRepositoryAuthTokens Get();
+﻿namespace Mcma.Tools.ModuleRepositoryClient.Auth;
 
-    void Set(ModuleRepositoryAuthTokens moduleRepositoryAuthTokens);
+internal interface IModuleRepositoryTokenStorage
+{
+    ModuleRepositoryAuthTokens? Get();
+
+    void Set(ModuleRepositoryAuthTokens? moduleRepositoryAuthTokens);
 }

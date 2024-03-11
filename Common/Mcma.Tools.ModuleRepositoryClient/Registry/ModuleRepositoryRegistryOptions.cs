@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using Mcma.Tools.ModuleRepositoryClient.Auth;
 using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools.ModuleRepositoryClient.Registry;

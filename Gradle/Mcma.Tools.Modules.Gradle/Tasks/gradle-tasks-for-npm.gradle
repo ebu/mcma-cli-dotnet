@@ -15,17 +15,17 @@ task setMcmaVersion {
         def jsonSlurper = new JsonSlurper()
         def object = jsonSlurper.parse(file("package.json"))
 
-        if (object.dependencies != null) {
+        if (object.dependencies is not null) {
             object.dependencies.keySet().each {
                 object.dependencies[it] = it.startsWith("@mcma/") ? McmaVersion : object.dependencies[it]
             }
         }
-        if (object.peerDependencies != null) {
+        if (object.peerDependencies is not null) {
             object.peerDependencies.keySet().each {
                 object.peerDependencies[it] = it.startsWith("@mcma/") ? McmaVersion : object.peerDependencies[it]
             }
         }
-        if (object.devDependencies != null) {
+        if (object.devDependencies is not null) {
             object.devDependencies.keySet().each {
                 object.devDependencies[it] = it.startsWith("@mcma/") ? McmaVersion : object.devDependencies[it]
             }

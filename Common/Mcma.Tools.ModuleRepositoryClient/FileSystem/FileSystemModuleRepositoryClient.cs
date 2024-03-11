@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Mcma.Model;
+﻿using Mcma.Model;
 
 namespace Mcma.Tools.ModuleRepositoryClient.FileSystem;
 
@@ -20,8 +17,8 @@ internal class FileSystemModuleRepositoryClient : IModuleRepositoryClient
 
         Directory.CreateDirectory(path);
 
-        using var readStream = File.OpenRead(modulePackageFilePath);
-        using var writeStream = File.Create(Path.Combine(path, Path.GetFileName(modulePackageFilePath)));
+        await using var readStream = File.OpenRead(modulePackageFilePath);
+        await using var writeStream = File.Create(Path.Combine(path, Path.GetFileName(modulePackageFilePath)));
 
         await readStream.CopyToAsync(writeStream);
     }

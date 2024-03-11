@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Mcma.Tools.Modules.Dotnet.Azure;
+﻿namespace Mcma.Tools.Modules.Dotnet.Azure;
 
 public abstract class AzureFunctionAppModuleTemplate : IDotnetNewProviderModuleTemplate
 {

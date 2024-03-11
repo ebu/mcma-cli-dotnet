@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Mcma.Tools.Dotnet;
-using Mcma.Tools.Modules.Packaging;
+﻿using Mcma.Tools.Dotnet;
 using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools.Modules.Dotnet.Aws;
@@ -23,7 +19,7 @@ public class AwsLambdaDotnetFunctionPackager : IDotnetFunctionPackager
         var toolManifestFile = Path.Combine(moduleProviderContext.ProviderFolder, ".config", "dotnet-tools.json");
         var toolManifest = File.Exists(toolManifestFile) ? JObject.Parse(File.ReadAllText(toolManifestFile)) : null;
 
-        var areAwsLambdaToolsInstalled = toolManifest?["tools"]?["amazon.lambda.tools"] != null;
+        var areAwsLambdaToolsInstalled = toolManifest?["tools"]?["amazon.lambda.tools"] is not null;
         if (!areAwsLambdaToolsInstalled)
         {
             if (!File.Exists(toolManifestFile))

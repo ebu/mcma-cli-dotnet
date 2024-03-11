@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Dotnet;
+﻿namespace Mcma.Tools.Dotnet;
 
 public interface IDotnetCli
 {
@@ -8,7 +6,7 @@ public interface IDotnetCli
         
     Task RestoreAsync(string target);
 
-    Task PublishAsync(string projectPath, string config = "Release", string arch = "linux-x64", string outputFolder = null);
+    Task PublishAsync(string projectPath, string config = "Release", string arch = "linux-x64", string? outputFolder = null);
         
     Task NewAsync(string templateName, string folder, params (string name, string value)[] options);
 

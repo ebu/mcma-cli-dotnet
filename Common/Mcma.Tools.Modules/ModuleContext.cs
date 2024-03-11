@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 
 namespace Mcma.Tools.Modules;
 
@@ -13,10 +9,10 @@ public class ModuleContext
 
     public ModuleContext(string rootFolder, params (string, string)[] variables)
     {
-        RootFolder = rootFolder ?? throw new ArgumentNullException();
+        RootFolder = rootFolder ?? throw new ArgumentNullException(nameof(rootFolder));
         ModuleJsonFilePath = Path.Combine(RootFolder, "module.json");
 
-        _module = new Lazy<Module>(() => JsonFileHelper.GetJsonObjectFromFile(ModuleJsonFilePath).ToObject<Module>());
+        _module = new Lazy<Module>(() => JsonFileHelper.GetJsonObjectFromFile<Module>(ModuleJsonFilePath));
         _variables = new Lazy<ReadOnlyDictionary<string, string>>(
             () =>
                 new ReadOnlyDictionary<string, string>(
@@ -53,7 +49,7 @@ public class ModuleContext
 
     public IEnumerable<ModuleProviderContext> GetProviders()
         => GetProviderFolders().Select(moduleFilePath => new ModuleProviderContext(this, Path.GetDirectoryName(moduleFilePath)));
-    
+
     public void Save()
         => File.WriteAllText(ModuleJsonFilePath, Module.ToJson());
 }

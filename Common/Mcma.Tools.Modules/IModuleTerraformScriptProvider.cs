@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Mcma.Tools.Modules;
+﻿namespace Mcma.Tools.Modules;
 
 public interface IModuleTerraformScriptProvider
 {

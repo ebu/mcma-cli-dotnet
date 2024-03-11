@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
+﻿using System.Xml;
 
 namespace Mcma.Tools.Modules.Dotnet;
 
@@ -18,21 +14,21 @@ public class DotnetProject
         
     public string Path { get; }
 
-    private IEnumerable<XmlElement> GetPropertyGroupElements()
+    private IEnumerable<XmlElement>? GetPropertyGroupElements()
         => XmlDoc.DocumentElement?.GetElementsByTagName("PropertyGroup").OfType<XmlElement>();
 
-    private IEnumerable<XmlElement> GetItemGroupElements()
+    private IEnumerable<XmlElement>? GetItemGroupElements()
         => XmlDoc.DocumentElement?.GetElementsByTagName("ItemGroup").OfType<XmlElement>();
 
-    private XmlElement GetVersionElement()
-        => GetPropertyGroupElements().Select(x => x.GetElementsByTagName("Version").OfType<XmlElement>().FirstOrDefault())
-                                     .FirstOrDefault(x => x != null);
+    private XmlElement? GetVersionElement()
+        => GetPropertyGroupElements()?.Select(x => x.GetElementsByTagName("Version").OfType<XmlElement>().FirstOrDefault())
+                                     .FirstOrDefault(x => x is not null);
 
-    private IEnumerable<XmlElement> GetPackageReferenceElements()
-        => GetItemGroupElements().SelectMany(i => i.GetElementsByTagName("PackageReference").OfType<XmlElement>());
+    private IEnumerable<XmlElement>? GetPackageReferenceElements()
+        => GetItemGroupElements()?.SelectMany(i => i.GetElementsByTagName("PackageReference").OfType<XmlElement>());
 
-    private IEnumerable<XmlElement> GetMcmaPackageReferenceElements()
-        => GetPackageReferenceElements().Where(x => x.GetAttribute("Include").StartsWith("Mcma.", StringComparison.OrdinalIgnoreCase));
+    private IEnumerable<XmlElement>? GetMcmaPackageReferenceElements()
+        => GetPackageReferenceElements()?.Where(x => x.GetAttribute("Include").StartsWith("Mcma.", StringComparison.OrdinalIgnoreCase));
 
     public static DotnetProject Load(string csProjFile)
     {
@@ -50,7 +46,7 @@ public class DotnetProject
         var versionElement = GetVersionElement();
         if (versionElement == null)
         {
-            var propertyGroupElements = GetPropertyGroupElements().ToArray();
+            var propertyGroupElements = GetPropertyGroupElements()?.ToArray() ?? [];
             var firstPropertyGroup = propertyGroupElements.FirstOrDefault();
             var propertyGroupWithTargetFramework =
                 propertyGroupElements.FirstOrDefault(pg => pg.GetElementsByTagName("TargetFramework").OfType<XmlElement>().Any());
@@ -73,7 +69,7 @@ public class DotnetProject
 
     public void SetVersionOnMcmaPackageReferences(Version version)
     {
-        foreach (var mcmaRef in GetMcmaPackageReferenceElements())
+        foreach (var mcmaRef in GetMcmaPackageReferenceElements() ?? [])
             mcmaRef.SetAttribute("Version", version.ToString());
 
         XmlDoc.Save(Path);

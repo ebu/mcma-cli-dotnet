@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Mcma.Tools.Modules;
 
 public class ModulePackage
 {
-    public JArray Files { get; set; }
+    public JArray? Files { get; set; }
 
-    public FunctionInfo[] Functions { get; set; }
+    public FunctionInfo[] Functions { get; set; } = [];
     
-    public Dictionary<string, string> Properties { get; set; }
+    public Dictionary<string, string>? Properties { get; set; }
 }

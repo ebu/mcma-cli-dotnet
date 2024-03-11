@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Common\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
+      <ProjectReference Include="..\Mcma.Tools.Modules\Mcma.Tools.Modules.csproj" />
     </ItemGroup>
 
 </Project>

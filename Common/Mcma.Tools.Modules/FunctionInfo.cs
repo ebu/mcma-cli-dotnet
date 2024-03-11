@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace Mcma.Tools.Modules;
+﻿namespace Mcma.Tools.Modules;
 
 public class FunctionInfo
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
-    public string Type { get; set; }
+    public required string Type { get; set; }
 
-    public string Path { get; set; }
+    public required string Path { get; set; }
 
-    public IDictionary<string, string> Properties { get; set; }
+    public Dictionary<string, string> Properties { get; set; } = [];
 }

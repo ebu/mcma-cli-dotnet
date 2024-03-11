@@ -1,15 +1,15 @@
-﻿using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+
+namespace Mcma.Tools.ModuleRepositoryClient.Auth;
 
 internal class UserProfileTokenStorage : IModuleRepositoryTokenStorage
 {
     private static readonly string LocalFilePath =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".mcma", "credentials.json");
 
-    private ModuleRepositoryAuthTokens CurrentModuleRepositoryAuthTokens { get; set; }
+    private ModuleRepositoryAuthTokens? CurrentModuleRepositoryAuthTokens { get; set; }
 
-    private static ModuleRepositoryAuthTokens Load()
+    private static ModuleRepositoryAuthTokens? Load()
     {
         try
         {
@@ -21,12 +21,12 @@ internal class UserProfileTokenStorage : IModuleRepositoryTokenStorage
         }
     }
 
-    private static void Save(ModuleRepositoryAuthTokens moduleRepositoryAuthTokens)
-        => File.WriteAllText(LocalFilePath, JObject.FromObject(moduleRepositoryAuthTokens).ToString());
+    private static void Save(ModuleRepositoryAuthTokens? moduleRepositoryAuthTokens)
+        => File.WriteAllText(LocalFilePath, moduleRepositoryAuthTokens.HasValue ? JObject.FromObject(moduleRepositoryAuthTokens).ToString() : default);
 
-    public ModuleRepositoryAuthTokens Get() => CurrentModuleRepositoryAuthTokens ??= Load();
+    public ModuleRepositoryAuthTokens? Get() => CurrentModuleRepositoryAuthTokens ??= Load();
 
-    public void Set(ModuleRepositoryAuthTokens moduleRepositoryAuthTokens)
+    public void Set(ModuleRepositoryAuthTokens? moduleRepositoryAuthTokens)
     {
         Save(moduleRepositoryAuthTokens);
         CurrentModuleRepositoryAuthTokens = moduleRepositoryAuthTokens;

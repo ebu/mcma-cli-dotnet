@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Mcma.Model;
-using Newtonsoft.Json.Linq;
+﻿using Mcma.Model;
 
 namespace Mcma.Tools.ModuleRepositoryClient;
 

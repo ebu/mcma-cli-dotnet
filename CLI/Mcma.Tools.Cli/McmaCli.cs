@@ -7,6 +7,4 @@ namespace Mcma.Tools.Cli;
             typeof(Project.Project),
             typeof(Module.Module),
             typeof(Repository.Repository))]
-public class McmaCli : BaseCmd
-{
-}
+public class McmaCli : BaseCmd;

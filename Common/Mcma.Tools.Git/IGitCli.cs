@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Mcma.Tools.Git;
+﻿namespace Mcma.Tools.Git;
 
 public interface IGitCli
 {

@@ -1,31 +1,21 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace Mcma.Tools;
 
-public class CliExecutableNotFoundException : Exception
-{
-    public CliExecutableNotFoundException(string executable)
-        : base(
-            $"'{executable}' was not found on any of the paths in the PATH variable. " +
-            "Please ensure that it's properly installed in a folder registered in PATH or specify the full path.")
-    {
-    }
-}
-
 internal class CliExecutor : ICliExecutor
 {
-    private static string GetFullPath(string executable)
+    private static string? GetFullPath(string executable)
     {
-        if (executable == null)
-            throw new ArgumentNullException(nameof(executable));
+        ArgumentNullException.ThrowIfNull(executable);
+
+        if (File.Exists(executable))
+            return Path.GetFullPath(executable);
         
-        return File.Exists(executable)
-            ? Path.GetFullPath(executable)
-            : (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator).Select(p => Path.Combine(p, executable)).FirstOrDefault(File.Exists);
+        var pathEnvVar = Environment.GetEnvironmentVariable("PATH") ?? "";
+        var paths = pathEnvVar.Split(Path.PathSeparator);
+        var fullPaths = paths.Select(path => Path.Combine(path, executable));
+        
+        return fullPaths.FirstOrDefault(File.Exists);
     }
     
     public Task<(string stdOut, string stdErr)> ExecuteAsync(string executable, string[] args, bool showOutput, params (string, string)[] environmentVariables)

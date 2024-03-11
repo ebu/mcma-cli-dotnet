@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+
+namespace Mcma.Tools.ModuleRepositoryClient.Auth;
 
 internal class ModuleRepositoryTokensReceiver : IModuleRepositoryTokensReceiver
 {
@@ -40,7 +38,10 @@ internal class ModuleRepositoryTokensReceiver : IModuleRepositoryTokensReceiver
 
         var respJson = await ReceiveJsonAsync(cancellationToken);
 
-        return respJson["connectionId"]?.Value<string>();
+        if (respJson["connectionId"]?.Value<string>() is not string connectionId)
+            throw new Exception($"Failed to start tokens receiver. '{nameof(connectionId)}' is null");
+
+        return connectionId;
     }
 
     public async Task<ModuleRepositoryAuthTokens> WaitForTokensAsync(CancellationToken cancellationToken)

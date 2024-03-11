@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Mcma.Client.Auth;
+﻿using Mcma.Client.Auth;
 using Mcma.Serialization;
 using Mcma.Tools.ModuleRepositoryClient.Registry;
 
@@ -15,7 +12,7 @@ internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
     {
         Registry = registry ?? throw new ArgumentNullException(nameof(registry));
         AuthProvider = authProvider ?? throw new ArgumentNullException(nameof(authProvider));
-        ClientProviders = clientProviders?.ToArray() ?? Array.Empty<IModuleRepositoryClientProvider>();
+        ClientProviders = clientProviders.ToArray();
     }
 
     private IModuleRepositoryRegistry Registry { get; }
@@ -26,9 +23,9 @@ internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
 
     public void AddRepository(string name,
                               string url,
-                              string authType = null,
-                              string authContext = null,
-                              IDictionary<string, string> properties = null)
+                              string? authType = null,
+                              string? authContext = null,
+                              IDictionary<string, string>? properties = null)
     {
         var entry = new ModuleRepositoryRegistryEntry
         {
@@ -44,15 +41,15 @@ internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
     }
 
 
-    public void SetRepositoryAuth(string name, string authType, string authContext = null)
+    public void SetRepositoryAuth(string name, string authType, string? authContext = null)
     {
-        void Update(ModuleRepositoryRegistryEntry x)
+        var updated = Registry.TryUpdate(name, x =>
         {
             x.AuthType = authType;
             x.AuthContext = authContext;
-        }
-
-        if (!Registry.TryUpdate(name, Update))
+        });
+        
+        if (!updated)
             throw new Exception($"Unable to update repository '{name}' as it has not yet been configured.");
     }
 
@@ -64,8 +61,8 @@ internal class ModuleRepositoryClientManager : IModuleRepositoryClientManager
         if (clientProvider == null)
             throw new Exception($"Url '{repositoryEntry.Url}' is not supported.");
 
-        IAuthenticator authenticator = null;
-        if (repositoryEntry.AuthType != null)
+        IAuthenticator? authenticator = null;
+        if (repositoryEntry.AuthType is not null)
             authenticator = AuthProvider.Get(repositoryEntry.AuthType, "ModuleRepository", nameof(Module));
 
         return clientProvider.GetClient(repositoryEntry, authenticator);

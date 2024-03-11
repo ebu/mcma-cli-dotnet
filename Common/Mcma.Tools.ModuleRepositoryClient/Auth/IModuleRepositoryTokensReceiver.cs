@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Mcma.Tools.ModuleRepositoryClient.Auth;
 
 internal interface IModuleRepositoryTokensReceiver
 {

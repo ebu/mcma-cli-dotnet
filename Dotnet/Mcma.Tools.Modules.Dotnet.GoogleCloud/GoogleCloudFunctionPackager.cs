@@ -1,22 +1,22 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.IO.Compression;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Mcma.Tools.Modules.Dotnet.GoogleCloud;
 
-public class GoogleCloudFunctionPackager : IDotnetFunctionPackager
+public partial class GoogleCloudFunctionPackager : IDotnetFunctionPackager
 {
+
+    [GeneratedRegex("""\<ProjectReference\s+Include="(.+)"\s*\/\>""")]
+    private static partial Regex MyRegex();
+    
     public string Type => "GoogleCloudFunction";
 
-    private static readonly Regex ProjectRefRegex = new(@"\<ProjectReference\s+Include=""(.+)""\s*\/\>");
+    private static readonly Regex ProjectRefRegex = MyRegex();
         
-    private static readonly string[] ExcludeFolders = { "bin", "obj", "dist", "staging", ".publish" };
+    private static readonly string[] ExcludeFolders = ["bin", "obj", "dist", "staging", ".publish"];
 
     private static bool ShouldIncludeFolder(DirectoryInfo dir)
-        => !ExcludeFolders.Any(f => f.Equals(dir?.Name, StringComparison.OrdinalIgnoreCase));
+        => !ExcludeFolders.Any(f => f.Equals(dir.Name, StringComparison.OrdinalIgnoreCase));
 
     private static void CopyAll(DirectoryInfo source, DirectoryInfo target)
     {
@@ -31,7 +31,7 @@ public class GoogleCloudFunctionPackager : IDotnetFunctionPackager
 
     private static void FlattenAndCopyDependencies(string csProjFile, string stagingFolder)
     {
-        var csProjFolder = Path.GetDirectoryName(csProjFile);
+        var csProjFolder = Path.GetDirectoryName(csProjFile) ?? throw new Exception($"Directory name for {csProjFile} is null");
         var csProjContent = File.ReadAllText(csProjFile);
 
         foreach (var projectCapture in ProjectRefRegex.Matches(csProjContent).Select(m => m.Groups[1].Captures[0]))
@@ -40,7 +40,7 @@ public class GoogleCloudFunctionPackager : IDotnetFunctionPackager
             var dependencyCsProjPathRelative = projectCapture.Value;
 
             // the last two parts of the path should be something like "RefProject/RefProject.csproj"
-            var dependencyCsProjPathRelativeParts = dependencyCsProjPathRelative.Split(new[] { "\\", "/" }, StringSplitOptions.RemoveEmptyEntries);
+            var dependencyCsProjPathRelativeParts = dependencyCsProjPathRelative.Split(["\\", "/"], StringSplitOptions.RemoveEmptyEntries);
             var dependencyCsProjFolder = dependencyCsProjPathRelativeParts.Skip(Math.Max(0, dependencyCsProjPathRelativeParts.Length - 2));
 
             // resolve the relative path to the absolute path of the dependency project so we can copy it over 
